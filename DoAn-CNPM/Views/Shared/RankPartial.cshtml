@@ -1,0 +1,103 @@
+﻿@{
+    List<DoAn_CNPM.Models.Song> listSong = ViewBag.listSong;
+    int tab = ViewBag.tab;
+
+}
+
+
+<!--Button nghe tất cả-->
+<div class=" playAll ">
+
+    @switch (tab)
+    {
+        case 1:
+            {
+                <a href="@Url.Action("PlayRankForWeek","TrangNgheNhac")"><i class="fas fa-play-circle"></i> <span>Nghe tất cả</span></a>
+                break;
+            }
+        case 2:
+            {
+                <a href="@Url.Action("PlayRankForMonth","TrangNgheNhac")"><i class="fas fa-play-circle"></i> <span>Nghe tất cả</span></a>
+                break;
+            }
+        case 3:
+            {
+                <a href="@Url.Action("PlayRankForViews","TrangNgheNhac")"><i class="fas fa-play-circle"></i> <span>Nghe tất cả</span></a>
+                break;
+            }
+
+        default:
+            break;
+    }
+
+
+
+</div>
+
+@if (listSong != null && listSong.Count > 0)
+    {
+            int i = 1;
+            foreach (var item in listSong)
+            {
+                    <!-- item in list-->
+        <div class=" item ">
+            <span class="rank">@i </span>
+            <div class="content ">
+                @*<div class="imgArtist"><img src="~/Assets/image/avartarArtist/LouHoang.jpg" alt=""></div>*@
+                <div class="imgArtist" style="background:url('/Assets/image/avartarArtist/@(item.Artists.FirstOrDefault().Image)') "></div>
+                <div class="details ">
+                    <a href="@Url.Action("Index","TrangNgheNhac", new { id=item.ID})" class="songName" title="@item.Name">@item.Name</a>
+                    <p>
+                        @foreach (var it in item.Artists)
+    {
+        if (it != item.Artists.LastOrDefault())
+        {
+                                <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+                                        <span>&#44;</span>
+                            }
+        else
+        {
+                                <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+
+                            }
+    }
+                    </p>
+                </div>
+                <div class="controls">
+
+                    <div class="allcon">
+                        <!-- nút info-->
+                        <a href="@Url.Action("Index","TrangNgheNhac",new { id=item.ID})" class="info"><img src="~/Assets/image/icon/info.png" alt=""></a>
+                        <!-- nút thêm vào playlist-->
+                        <a class="addSongToPlayList" href=""><img onclick="addPlayListGeneral('@item.ID'); return false;" src="~/Assets/image/icon/themVao.png" alt=""></a>
+                        <!-- nút tải xuống-->
+                        <a href="@Url.Content("~/Assets/singer/"+item.FileName)" download="@item.Name" onclick="downloadMP3File(); " class="downloadSong"><img src="~/Assets/image/icon/download.png" alt=""></a>
+                    </div>
+                    @switch (tab)
+    {
+                        case 1:
+                            {
+                                <p class="views">@item.ViewsPerWeek lượt nghe</p>
+                                break;
+                            }
+                        case 2:
+                            {
+                                <p class="views">@item.ViewsPerMonth lượt nghe</p>
+                                break;
+                            }
+                        case 3:
+                            {
+                                <p class="views">@item.Views lượt nghe</p>
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                </div>
+
+
+            </div>
+        </div>
+        i++;
+    }
+}

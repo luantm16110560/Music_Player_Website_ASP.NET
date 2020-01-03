@@ -1,0 +1,284 @@
+*{
+    margin:0; 
+    padding: 0
+}
+body{
+        background-color: #192536 !important;
+}
+
+ul{
+    list-style: none;
+
+}
+
+.header{
+    float: left;
+    width: 100%;
+    background: #21324a;
+    z-index: 10;
+    position: fixed;
+    height: 45px !important;
+    top:0px;
+}
+.header>a{
+    float: left;
+    width: 5%;
+}
+.menu a{
+    text-decoration: none;
+    color: white;
+    
+    
+}
+.menu ul{
+    position: absolute;
+    top: 42px;
+    left: 0px;
+    display: none;
+    
+}
+.menu{
+    float: left;
+    width: 65%;
+   
+}
+.menu> li{
+    width:20% !important;
+}
+
+.menu li{
+    float: left;
+    width: 100%;
+    line-height: 1.5em;
+    position: relative;
+    text-align: center;
+    
+    padding: 10px;
+    background: #21324a;
+}
+.menu li:hover{
+    background: #20b484;
+    cursor: pointer;
+}
+.menu a:hover{
+	color: white;
+}
+	
+.menu ul ul{
+    left: 100%;
+    top: 0px;
+}
+#icon_index{
+    float: left;
+    padding-left: 20%;
+}
+.search>input{
+    float: left;
+    line-height: 1em;
+    position: relative;
+    padding-top: 5px;
+    outline: none;
+    border: 0px;
+    width: 80% ;
+ 
+}
+.search{
+    background: white;
+    float: left;
+
+    margin-top: 5px;
+    margin-left: 25px;
+    width: 15%;
+    position: relative;
+}
+.search>a{
+    float: left;
+    width: 20%;
+
+}
+.user{
+    margin-left: 88%;
+    float: left;
+    width: 12%;
+    position: fixed;
+}
+.user>img{
+    float: left;
+    
+}
+.user>a{
+        color: white;
+    float: left;
+    margin-top: 5%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 70%;
+    
+}
+.user>ul{
+	    float: left;
+    width: 85%;
+	display:none;
+}
+.account>li{
+	float: left;
+    width: 100%;
+    line-height: 1.5em;
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    background: #21324a;
+}
+.account li:hover{
+    background: #20b484;
+    cursor: pointer;
+}
+.account a{
+	color:white !important;
+}
+a{
+    text-decoration: none !important;
+	
+}
+
+.addSongStatus{
+	position: fixed;
+    float: left;
+    width: 30%;
+    left: 35%;
+    top: 10%;
+    right: 35%;
+    background: white;
+    color: black;
+    z-index: 10;
+    background-color: #65509e;
+    color: white;
+    font-weight: 400;
+    padding-left: 2%;
+    padding-right: 2%;
+	display:none;
+}
+
+.addPlayListUL li img{
+	    width: 15%;
+    margin-left: 5%;
+    float: left;
+}
+.addPlayListUL li a{
+	    color: black !important;
+    width: 75%;
+    margin-left: 5%;
+    float: left;
+    margin-top: 3%;
+}
+.addPlayListUL>.listPlayListInModal{
+	    overflow-y: auto;
+    max-height: 100px;
+}
+
+.addPlayListUL >*{
+	float:left;
+	width:100%;
+}
+.addPlayListUL>.listPlayListInModal>li:hover{
+	color: black ;
+	background-color:#efefef;
+	cursor: pointer;
+}
+.addPlayListUL>.listPlayListInModal>li{
+	width: 100%;
+    float: left;
+}
+.addPlayListUL>.details{
+	    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.addPlayListUL>.details>*{
+	float: left;
+}
+.addPlayListUL>.details>.imgSong{
+	width: 25%;
+}
+.addPlayListUL>.details>.imgSong>img{
+	width: 100%;
+}
+.addPlayListUL>.details>.songNameInModal{
+	    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.36;
+}
+.addPlayListUL>.details>.artistNameInModal{
+	font-size: 12px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #a0a0a0;
+}
+.addPlayListUL>.details>p{
+	    margin-left: 2%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 73%;
+    margin-bottom: 2%;
+}
+.addPlayListUL >.addNewPLayListInModal{
+	width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+	cursor: pointer;
+}
+.addPlayListUL >.addNewPLayListInModal>*{
+	float: left;
+}
+.addPlayListUL >.addNewPLayListInModal>p{
+	margin-left: 2%;
+	color: #a0a0a0;
+	    margin-top: 1%;
+}
+.addPlayListUL>.inputNewPlayList{
+	width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+	display: none;
+}
+.addPlayListUL>.inputNewPlayList>*{
+	width: 100%;
+}
+.addPlayListUL>.inputNewPlayList>.inputPlayListName{
+	height: 35px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #dbdbdb;
+    padding: 0 10px;
+}
+.addPlayListUL>.inputNewPlayList>a{
+	float: right;
+    width: 36%;
+    text-align: center;
+    color: white!important;
+    background-color: #65509e;
+    padding: 1%;
+    margin-top: 4%;
+}
+.addPlayListUL{
+	position: fixed;
+    float: left;
+    width: 20%;
+    left: 45%;
+    top: 20%;
+    right: 40%;
+    background: white;
+    color: black;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	    display: none;
+	z-index:10;
+}
+.overflowText{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+}

@@ -1,0 +1,182 @@
+body{
+    background-color: #192536;
+    color: white;
+}
+
+#body{
+    padding: 1%;
+    background-color: #192536;
+    color: white;
+    padding-top: 5%;
+    background-color:#202f44;
+    padding-left: 3%;
+    padding-right:3%;
+    float: left;
+}
+.titleLabel{
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.tabTheLoai>a{
+    margin-right: 1%;
+    color: white;
+}
+.tabTheLoaiDcChon{
+    border-bottom: 2px solid white;
+    color: white !important;
+}
+.padding0{
+    padding-left: 0px;
+}
+
+.listBXH{
+    margin-top: 1%;
+
+    padding-bottom: 1%;
+    float: left;
+    width: 100%;
+
+}
+.listBXH>.item{
+    float: left;
+    width: 100%;
+    padding: 1%;
+    border-bottom: 1px solid #303b4a;
+}
+.listBXH>.item:hover{
+    background-color: #263b57;
+}
+.listBXH>.item:hover .views{
+    display: none;
+}
+.listBXH>.item:hover .allcon a{
+    display: block !important;
+}
+.listBXH>.item>*{
+    float: left;
+}
+.content{
+    width: 96%;
+}
+.content a{
+    color: white;
+}
+.content a:hover{
+    color: #20b484;
+}
+.songName{
+    margin-bottom: 0px;
+}
+.controls{
+        width: 30%;
+    float: right !important;
+    text-align: right;
+    padding-top: 2%;
+}
+.allcon a {
+    position: absolute;
+    display: none;
+}
+.allcon .downloadSong{
+    right:4%;
+}
+.allcon .addSongToPlayList{
+    right: 8%;
+}
+.allcon .info{
+    right: 12%;
+}
+
+
+
+.controls>*{
+    margin-left: 5%;
+}
+.info>img:hover{
+    content: url("../image/icon/info-hover.png");
+}
+.addSongToPlayList>img:hover{
+    content: url("../image/icon/add-hover.png");
+}
+.downloadSong>img:hover {
+    content: url("../image/icon/download-hover.png");
+}
+.content>*{
+    float: left;
+    margin-left: 1%;
+}
+.details{
+    width: 60%;
+}
+.ngheSi{
+    color: #6a837b;
+}
+.rank{
+    font-size: 30px;
+    width: 4%;
+}
+.hr{
+    font-size: 30px;
+}
+.addPlayList{
+    font-size: 22px;
+    margin-top: 2%;
+}
+.headerTab {
+    margin-top: 1%;
+    width: 96%;
+        float: left;
+    margin-right: 2%;
+
+}
+.headerTab>.list>li>a{
+    color: white;
+}
+
+.headerTab>.list>li {
+    float: left;
+    border-bottom: 1px solid white;
+    margin-right: 2%;
+    padding-bottom: 1%;
+}
+
+.headerTab>.list>li>a:hover {
+    color: #20b484;
+}
+
+.playAll{
+    font-size: 18px;
+    float: left;
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.playAll>a {
+    float: left;
+    border: 0;
+    padding: 4px 12px;
+    background-color: #65509e;
+    color: #fcfcfc;
+    text-transform: initial;
+    cursor: pointer;
+}
+.playAll>a:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+}
+
+.imgArtist{
+    width: 60px; 
+    height: 60px;
+    transform: scale(1) ;
+    transition-duration: 1s;
+    background-size: 100% 100% !important;
+}
+.imgArtist:hover{
+    transform: scale(1.05) ;
+    transition-duration: 1s;
+}
+
+.currentTab a{
+    color: #20b484 !important;
+}

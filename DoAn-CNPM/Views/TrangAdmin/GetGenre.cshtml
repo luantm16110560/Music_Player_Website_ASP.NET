@@ -1,0 +1,94 @@
+﻿
+
+@{
+    List<DoAn_CNPM.Models.Genre> listGenre = ViewBag.listGenre;
+}
+
+<!-- Page level plugins -->
+<script src="/Assets/admin/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Thể loại</h1>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Bảng thống kê</h6>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.message))
+    {
+        <div class="alert alert-info">
+            <strong>Thông báo</strong> @ViewBag.message
+        </div>
+    }
+
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="GenreDataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Mã thể loại</th>
+                        <th>Tên thể loại</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in listGenre)
+                    {
+                        <tr>
+                            <td>@item.ID</td>
+                            <td>@item.Name</td>
+
+                            <td>
+                                <div class="custom-control custom-checkbox">
+                                    @if (item.Status == true)
+                                    {
+                                        <input type="checkbox" checked disabled class="custom-control-input" id="defaultUnchecked">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled class="custom-control-input" id="defaultUnchecked">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    }
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button class="btn btn-success " name="" onclick="AddOrEdit(3,true)">
+                Thêm
+            </button>
+            <button class="btn btn-success " name="" onclick="AddOrEdit(3,false)">
+                Sửa
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#GenreDataTable').DataTable();
+
+    //chọn album
+    $('#GenreDataTable tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            selectedObj = [];
+        }
+        else {
+            $('#GenreDataTable tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            selectedObj = [];
+            $(this).find('td').each((index, element) => {
+                selectedObj.push($(element).text());
+            });
+
+        }
+    });
+</script>
+

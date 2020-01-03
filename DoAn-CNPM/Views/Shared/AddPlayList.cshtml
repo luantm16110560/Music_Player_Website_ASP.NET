@@ -1,0 +1,51 @@
+﻿
+
+
+@{ 
+    DoAn_CNPM.Models.Song song = ViewBag.song;
+    List<DoAn_CNPM.Models.Playlist> allPlayList = ViewBag.allPlayList;
+    string artists = "";
+    foreach (var item in song.Artists)
+    {
+        artists = artists + " " + item.Name + ",";
+    }
+    artists = artists.Substring(0, artists.Length - 1);
+}
+
+<div class="details">
+    <div class="imgSong"><img src="@Url.Content("~/Assets/image/avartarArtist/"+@song.Artists.First().Image)" onerror="this.src='@Url.Content("~/Assets/image/icon/defaultUser.png")'" /> </div>
+    <p class="songNameInModal">@song.Name</p>
+    <p class="artistNameInModal">@artists</p>
+</div>
+<hr />
+
+<div class="listPlayListInModal">
+
+    @if (allPlayList != null && allPlayList.Count > 0)
+    {
+        foreach (var item in allPlayList)
+        {
+            if (/*playListHasSong.Contains(item.ID)*/ item.Song_PlayList.Any(s=>s.Song==song.ID))
+            {
+                <li><img src="~/Assets/image/icon/PlayListLike.png" id="@("img"+item.ID.ToString())" /><a href="#" onclick="addsongtoplaylist(@item.ID,@song.ID)">@item.Name</a></li>
+            }
+            else
+            {
+                <li><img src="~/Assets/image/icon/PlayList.png" id="@("img"+item.ID.ToString())" /><a href="#" onclick="addsongtoplaylist(@item.ID,@song.ID)">@item.Name</a></li>
+            }
+        }
+    }
+    else
+    {
+        <li style="text-align:center;"><img src="~/Assets/image/icon/emptyPlayList.png" /> Hiện tại bạn chưa có play list nào</li>
+    }
+</div>
+<hr />
+<div class="inputNewPlayList">
+    <input class="inputPlayListName" type="text" id="txtPlayListName" placeholder="Nhập tên playlist" />
+    <a href="#" onclick="createNewPlayList()">Tạo Playlist</a>
+</div>
+<div class="addNewPLayListInModal" id="btnAddNewPlayList" onclick="openInputNewPlayList()">
+    <img src="~/Assets/image/icon/addNewPlayListInModal.png" />
+    <p>Tạo Playlist mới</p>
+</div>

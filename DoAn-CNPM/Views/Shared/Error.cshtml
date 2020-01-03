@@ -1,0 +1,55 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+
+<link rel="stylesheet" href="~/Assets/css/bootstrap.min.css" />
+<script src="~/Assets/js/jquery-3.3.1.min.js"></script>
+
+<style>
+    .bodyError{
+        padding-top: 15%;
+        background: #202f44;
+        color: white;
+        padding-bottom: 2%;
+        text-align: center;
+        min-height: 650px;
+    }
+    .error-actions>a{
+        margin-top: 3%;
+        background-color: #65509e;
+        border: 0px;
+    }
+    .error-actions>a:hover{
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+    }
+    
+</style>
+
+<div id="body">
+    <div class="container bodyError">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-template">
+                    <h1>
+                        Oops!
+                    </h1>
+                    <h2>
+                        404 Không tìm thấy trang
+                    </h2>
+                    <div class="error-details">
+                        @ViewBag.details
+                    </div>
+                    <div class="error-actions">
+                        <a href="@Url.Action("Index","TrangChu")" class="btn btn-primary btn-lg">
+                            <span class="glyphicon glyphicon-home"></span>
+                            Về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

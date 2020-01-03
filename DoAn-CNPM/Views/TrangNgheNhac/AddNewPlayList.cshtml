@@ -1,0 +1,30 @@
+﻿
+
+<!-- Tải lại danh sách playlist trong modal addPlayList -->
+
+@{
+    List<DoAn_CNPM.Models.Playlist> allPlayList = ViewBag.AllPlayList;
+    List<int> playListHasSong = ViewBag.ExistSongPlayList;
+    int SongID = ViewBag.songID;
+}
+
+@if (allPlayList != null && allPlayList.Count > 0)
+{
+    foreach (var item in allPlayList)
+    {
+        if (playListHasSong.Contains(item.ID))
+        {
+            <li><img src="~/Assets/image/icon/PlayListLike.png" id="@("img"+item.ID.ToString())" />
+    <a href="#" onclick="addsongtoplaylist(@item.ID,@SongID)">@item.Name</a>
+    </li>
+        }
+        else
+        {
+            <li><img src="~/Assets/image/icon/PlayList.png" id="@("img"+item.ID.ToString())" /><a href="#" onclick="addsongtoplaylist(@item.ID,@SongID)">@item.Name</a></li>
+        }
+    }
+}
+else
+{
+    <li style="text-align:center;"><img src="~/Assets/image/icon/emptyPlayList.png" /> Hiện tại bạn chưa có play list nào</li>
+}

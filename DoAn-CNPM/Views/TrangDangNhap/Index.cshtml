@@ -1,0 +1,77 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="~/Assets/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="~/Assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/css/TrangDangNhap.css">
+    <script src="~/Assets/js/TrangDangNhap.js"></script>
+    <script src="~/Assets/js/HashMD5.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <label for="">Đăng nhập tài khoản</label>
+        <div class="body">
+            <a href="#" id="Signin" class="currentTab">Đăng nhập</a>
+            <a href="" id="Signup" class="">Đăng ký</a>
+            <div class="content">
+                <form action="">
+                    <label class="errorLogin">Lỗi</label>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_user_login.png" alt="" ><input autocomplete="off" id="txtUser" name="txtUser" type="text" placeholder="Tài khoản">
+                    </div>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_password_login.png" alt="" ><input autocomplete="off" id="txtPass" name="txtPass" type="password" placeholder="Mật khẩu">
+                    </div>
+                    <input type="button" id="btnLogin" value="Đăng nhập">
+                    
+                </form>
+            </div>
+            <div class="contentSignup">
+                <form action="">
+                    <label class="errorSignUp">Lỗi</label>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_user_login.png" alt="" ><input autocomplete="off" id="txtUserSignUp" name="txtUserSignUp" type="text" placeholder="Tài khoản">
+                    </div>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_name_login.png" alt="" ><input autocomplete="off" id="txtName" name="txtName" type="text" placeholder="Họ và tên">
+                    </div>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_phone_login.png" alt="" ><input autocomplete="off" id="txtPhone" name="txtPhone" type="text" placeholder="Số điện thoại">
+                    </div>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_email_login.png" alt="" ><input autocomplete="off" id="txtEmail" name="txtEmail" type="text" placeholder="Email">
+                    </div>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_password_login.png" alt="" ><input autocomplete="off" id="txtPassSignUp" name="txtPassSignUp" type="password"
+       placeholder="Mật khẩu">
+                    </div>
+                    <div>
+                        <img src="~/Assets/image/icon/icon_password_login.png" alt="" ><input autocomplete="off" id="txtRePassSignUp" name="txtRePassSignUp" type="password"
+       placeholder="Nhập lại mật khẩu">
+                    </div>
+                    <input type="button" id="btnSignUp" value="Đăng ký">
+
+                    
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,315 @@
+body{
+    background-color: #192536;
+}
+.main{
+    padding-top: 5%;
+    float: left;
+    background-color: #202f44;
+    min-height: 660px;
+}
+
+.favoriteSong{
+    width: 100%;
+    float: left;
+}
+.favoriteSong>.bodyFavorite>*{
+    float: left;
+}
+.favoriteSong>.headerFavorite{
+    float: left;
+    width: 100%;
+}
+.favoriteSong>.headerFavorite>*{
+    float: left;
+}
+
+.favoriteSong>.headerFavorite>.title{
+    width: 70%;
+    color: white;
+    font-size: 23px;
+    
+}
+.favoriteSong>.bodyFavorite>ul{
+    width: 70%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 223px;
+    background-color: #263b57;
+    padding: 2%;
+    overflow-y: auto;
+}
+.favoriteSong>.bodyFavorite>ul>*{
+    float: left;
+    width: 100%;
+    padding: 1%;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>*{
+    float: left;
+    color: white;
+    margin-bottom: 0px;
+}
+
+
+.favoriteSong>.bodyFavorite>ul>li>a>.number{
+    width: 3%;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.info{
+    width: 67%;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.info>*{
+    float: left;
+    
+}
+
+.favoriteSong>.bodyFavorite>ul>li:hover{
+    background-color: #555088;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.info>.songName{
+    width: 50%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* display: inline-block; */
+    white-space: nowrap;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.info>.artistName{
+    padding-left: 2%;
+    width: 49%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* display: inline-block; */
+    white-space: nowrap;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>div{
+    width: 7%;
+    float: right;
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.detail:hover>img{
+    content:url("/Assets/image/icon/info-hover.png");
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.del:hover>img{
+    content:url("/Assets/image/icon/del-hover.png");
+}
+.favoriteSong>.bodyFavorite>ul>li>a>.download:hover>img{
+    content:url("/Assets/image/icon/download-hover.png");
+}
+
+.favoriteSong>.bodyFavorite>ul::-webkit-scrollbar {
+    width: 2px;
+    color: #21324a;
+}
+.favoriteSong>.bodyFavorite>ul::-webkit-scrollbar-thumb {
+    background: #4d5b6e;
+}
+.favoriteSong>.headerFavorite>.playAll{
+    border: 0;
+    padding: 4px 12px;
+    background-color: #65509e;
+    color: #fcfcfc;
+    text-transform: initial;
+    cursor: pointer;
+    width: 12%;
+    margin-right: 5%;
+    float: right;
+}
+.favoriteSong>.bodyFavorite>.imageFavorite{
+    width:20%;
+}
+.favoriteSong>.bodyFavorite>.imageFavorite>img{
+    width: 100%;
+}
+
+.hrTag{
+    border: 0.1px solid rgb(211, 204, 204);
+    width: 100%;
+    float: left;
+}
+
+.allPlayList{
+    width: 100%;
+    margin-top: 0%;
+    float: left;
+}
+
+.allPlayList>.headerPlayList{
+    width: 100%;
+    color: white;
+    font-size: 23px;
+}
+.allPlayList>.bodyPlayList{
+    width: 100%;
+
+}
+.allPlayList>.bodyPlayList>.listPlayList{
+    width: 100%;
+}
+
+.allPlayList>.bodyPlayList>.listPlayList>.itemPlayList{
+    width: 20%;
+    margin-right: 5%;
+    float: left;
+}
+.allPlayList>.bodyPlayList>.listPlayList>.itemPlayList>.itemImage{
+    width: 100%;
+}
+.allPlayList>.bodyPlayList>.listPlayList>.itemPlayList>.playListName{
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* display: inline-block; */
+    white-space: nowrap;
+
+}
+.allPlayList>.bodyPlayList>.listPlayList>.itemPlayList:hover{
+    cursor: pointer;
+}
+.allPlayList>.bodyPlayList>.listPlayList>.itemPlayList:hover>.playListName{
+    color: #dedce4;
+}
+.addSongStatus{
+	position: fixed;
+    float: left;
+    width: 30%;
+    left: 35%;
+    top: 10%;
+    right: 35%;
+    background: white;
+    color: black;
+    z-index: 10;
+    background-color: #65509e;
+    color: white;
+    font-weight: 400;
+    padding-left: 2%;
+    padding-right: 2%;
+	display:none;
+}
+
+
+.allPlayList>.headerPlayList>.addNewPLayList{
+	border: 0;
+    padding: 4px 12px;
+    background-color: #65509e;
+        font-size: 18px;
+    text-transform: initial;
+    cursor: pointer;
+    margin-right: 5%;
+	margin-left: 1%;
+}
+.allPlayList>.headerPlayList>.addNewPLayList>a>span{
+	color: #fcfcfc;
+}
+
+.mainTab>li>p{
+    color: white;
+    cursor: pointer;
+}
+.mainTab>li>p:hover{
+    color:  #20b484 !important;
+}
+
+.mainTab>li{
+    margin-right: 1%;
+    border-bottom: 1px solid white;
+}
+
+.selectedMainTab>p{
+    color:  #20b484 !important;
+}
+
+.allPlayListContent label{
+    color: white;
+}
+
+#cke_lyrics * {
+    color: black;
+}
+.cke_button__image, .cke_button__table {
+    display: none !important;
+}
+#uploadSong{
+    margin-bottom: 2%;
+}
+.uploadBTN{
+border: 0;
+    padding: 4px 12px;
+    background-color: #65509e;
+    color: #fcfcfc;
+    text-transform: initial;
+    cursor: pointer;
+}
+.uploadBTN:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+}
+#uploadArtistName *{
+    color: black !important;
+}
+.custom-file label{
+    color: black !important;
+}
+.profile{
+    float: left;
+    width: 100%;
+    display: none;
+}
+
+/*animation image album*/
+.itemImage{
+    width: 200px !important; 
+    height: 200px;
+    transform: scale(1) ;
+    transition-duration: 1s;
+    background-size: 100% 100% !important;
+}
+.itemImage:hover{
+    transform: scale(1.05) ;
+    transition-duration: 1s;
+}
+
+
+.listArtist>a{
+    margin-left: 1%;
+    
+}
+.btnFollow{
+    margin-top: 5%;
+    border: 1px solid;
+    text-align: center;
+
+}
+.btnFollow:hover{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.2), 0 6px 20px 0 rgba(0,0,0,.19);
+}
+.itemArtist{
+    margin-top: 5%;
+    margin-left: 1%;
+}
+.label{
+    margin-top: 2%;
+    font-size: 24px;
+    font-weight: 700;
+    color: #32323d;
+    text-transform: capitalize;
+}
+.listArtist>div{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-align: center;
+}
+.listArtist a{
+    color: white;
+}
+
+.imgArtist{
+    width: 200px; 
+    height: 200px;
+    border-radius: 50%;
+    
+    transform: scale(1) ;
+    transition-duration: 1s;
+    background-size: 100% 100% !important;
+}
+.imgArtist:hover{
+    transform: scale(1.05) ;
+    transition-duration: 1s;
+}

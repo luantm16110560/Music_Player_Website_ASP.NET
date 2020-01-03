@@ -1,0 +1,153 @@
+﻿
+
+
+
+@{
+    DoAn_CNPM.Models.Genre genre = ViewBag.genre;
+}
+
+<script src="~/Assets/admin/js/bootstrap.min.js"></script>
+<script src="~/Assets/admin/js/popper.min.js"></script>
+
+
+<form class="container-fluid" action="@Url.Action("AddOrUpdateGenre","TrangAdmin")" method="post" enctype="multipart/form-data">
+
+    <div class="alert alert-danger" role="alert" style="font-size: 20px; display: none;"
+         id="errorAdminAccountModal">
+
+    </div>
+    <!-- nội dung của modal-->
+    @if (genre != null)
+    {
+        <div class="form-group">
+            <label for="exampleInputPassword1">Mã thể loại</label>
+            <input type="text" name="ID" class="form-control" readonly value="@genre.ID">
+        </div>
+    }
+
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Tên thể loại</label>
+        @if (genre != null)
+        {
+            <input type="text" required name="Name" value="@genre.Name" class="form-control">
+        }
+        else
+        {
+            <input type="text" required name="Name" class="form-control">
+        }
+
+
+
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Mô tả</label>
+        <textarea type="text" name="Description" id="GenreDescriptionModal" class="form-control"></textarea>
+    </div>
+
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Ảnh thể loại</label>
+        <div class="custom-file mb-3">
+            @if (genre != null)
+            {
+                <input type="file" class="custom-file-input" id="inputImageGenre" name="GenreImage">
+            }
+            else
+            {
+                <input type="file" required class="custom-file-input" id="inputImageGenre" name="GenreImage">
+            }
+
+            <label class="custom-file-label" for="customFile" id="imageFileName">Chọn ảnh</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="image-parent">
+            @if (genre != null)
+            {
+                <img src="~/Assets/image/imageGenre/@genre.Image" class="img-fluid" id="previewImageGenre" alt="Responsive image">
+            }
+            else
+            {
+                <img src="#" class="img-fluid" id="previewImageGenre" alt="Responsive image">
+            }
+
+        </div>
+    </div>
+    <div class="form-check">
+        @if (genre != null)
+        {
+            if (genre.Status == true)
+            {
+                <input name="Status" type="checkbox" class="form-check-input" checked>
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+            else
+            {
+                <input name="Status" type="checkbox" class="form-check-input">
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+
+
+        }
+        else
+        {
+            <input name="Status" checked required type="checkbox" class="form-check-input">
+            <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+        }
+    </div>
+
+    @if (genre != null)
+    {
+        <button type="submit" class="btn btn-success">Lưu</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-success">Tạo</button>
+    }
+
+</form>
+
+
+<script>
+    //ckeditor
+    CKEDITOR.replace('GenreDescriptionModal');
+    //upload file
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    @if (genre != null) {
+     <text>
+
+        var GenreDescription = '@HttpUtility.JavaScriptStringEncode(genre.Description)';
+    if (GenreDescription)
+        CKEDITOR.instances.GenreDescriptionModal.setData(GenreDescription);
+
+
+        $('#imageFileName').text('@genre.Image');
+
+        </text>
+
+
+    }
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#previewImageGenre').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#inputImageGenre").change(function () {
+        readURL(this);
+    });
+</script>
+
