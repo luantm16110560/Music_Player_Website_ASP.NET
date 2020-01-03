@@ -126,7 +126,9 @@
                onended="endTimeslider(this)"
                ontimeupdate="UpdateTimeSlider(this)"
                onpause="PauseTimeSlider()"
-               onplaying="PlayTimeSlider()"></audio>
+               onplaying="PlayTimeSlider()">
+
+        </audio>
         <!--file chạy mp3-->
         <div class="audiofile col-lg-12 row">
             <img class="col-lg-5" id="imgAudioFile" src="@Url.Content("~/Assets/image/avartarArtist/"+@song.Artists.First().Image)" onerror="this.src='@Url.Content("~/Assets/image/icon/defaultUser.png")'" alt="" />

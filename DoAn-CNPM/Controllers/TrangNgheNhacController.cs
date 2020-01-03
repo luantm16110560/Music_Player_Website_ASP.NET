@@ -238,7 +238,7 @@ namespace DoAn_CNPM.Controllers
 
             List<int> listSongID = albumDAL.getListSongIDByAlbum(id);
 
-            if (listSongID.Count > 0)
+            if (listSongID !=null && listSongID.Count > 0)
             {
                 return PlaySongList(listSongID);
             }
