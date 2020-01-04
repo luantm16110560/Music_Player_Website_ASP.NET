@@ -1,0 +1,216 @@
+﻿
+
+
+@{
+    DoAn_CNPM.Models.Album album = ViewBag.album;
+    List<DoAn_CNPM.Models.Artist> listArtist = ViewBag.listArtist;
+}
+
+<script src="~/Assets/admin/js/bootstrap.min.js"></script>
+<script src="~/Assets/admin/js/popper.min.js"></script>
+
+
+<form class="container-fluid" action="@Url.Action("AddOrUpdateAlbum","TrangAdmin")" method="post" enctype="multipart/form-data">
+
+    <div class="alert alert-danger" role="alert" style="font-size: 20px; display: none;"
+         id="errorAdminAccountModal">
+
+    </div>
+    <!-- nội dung của modal-->
+    @if (album != null)
+    {
+        <div class="form-group">
+            <label for="exampleInputPassword1">Mã album</label>
+            <input type="text" name="ID" class="form-control" readonly value="@album.ID">
+        </div>
+    }
+
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Tên Album</label>
+        @if (album != null)
+        {
+            <input type="text" required name="Name" value="@album.Name" class="form-control">
+        }
+        else
+        {
+            <input type="text" required name="Name" value="" class="form-control">
+        }
+
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Mô tả</label>
+        <textarea type="text" name="Description" id="AlbumDescriptionModal" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Lượt xem</label>
+        @if (album != null)
+        {
+            <input type="text" name="Views" value="@album.Views" class="form-control">
+        }
+        else
+        {
+            <input type="text" name="Views" value="" class="form-control">
+        }
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Lượt yêu thích</label>
+        @if (album != null)
+        {
+            <input type="text" name="Likes" value="@album.Likes" class="form-control">
+        }
+        else
+        {
+            <input type="text" name="Likes" value="" class="form-control">
+        }
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Ca sĩ</label>
+        @if (album != null)
+        {
+            <select id="SongArtistModal" required name="artist" class="selectpicker" multiple data-live-search="true">
+                @foreach (var item in listArtist)
+                {
+                    <option value="@item.ID">@item.Name</option>
+                }
+
+            </select>
+        }
+        else
+        {
+            <select id="SongArtistModal" required name="artist" class="selectpicker" multiple data-live-search="true">
+                @foreach (var item in listArtist)
+                {
+                    <option value="@item.ID">@item.Name</option>
+                }
+
+            </select>
+        }
+        
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Tệp</label>
+        <div class="custom-file mb-3">
+            @if (album != null)
+            {
+                <input type="file" class="custom-file-input" id="uploadAlbumFile" name="albumImageFile">
+            }
+            else
+            {
+                <input type="file" required class="custom-file-input" id="uploadAlbumFile" name="albumImageFile">
+            }
+            
+            <label class="custom-file-label" for="customFile" id="fileName">Chọn ảnh</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="image-parent">
+            @if (album!=null){
+                <img src="~/Assets/image/imageAlbum/@album.Image" class="img-fluid" id="blah" alt="Responsive image">
+            }
+            else
+            {
+                <img src="" class="img-fluid" id="blah" alt="Responsive image">
+            }
+
+        </div>
+    </div>
+        
+        <div class="form-check">
+            @if (album != null)
+            {
+                if (album.Status == true)
+                {
+                    <input name="Status" type="checkbox" class="form-check-input" checked id="ActiveSongModal">
+                    <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+                }
+                else
+                {
+                    <input name="Status" type="checkbox" class="form-check-input" id="ActiveSongModal">
+                    <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+                }
+
+
+            }
+            else
+            {
+                <input name="Status" checked required type="checkbox" class="form-check-input" id="ActiveSongModal">
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+        </div>
+
+        @if (album != null)
+        {
+            <button type="submit" class="btn btn-success">Lưu</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-success">Tạo</button>
+        }
+
+</form>
+
+
+<script>
+    //ckeditor
+    CKEDITOR.replace('AlbumDescriptionModal');
+    //upload file
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    @if (album != null) {
+     <text>
+
+    var AlbumDescription = '@HttpUtility.JavaScriptStringEncode(album.Description)';
+    if (AlbumDescription)
+        CKEDITOR.instances.AlbumDescriptionModal.setData(AlbumDescription);
+    </text>
+
+        List<int> listArtistID = new List<int>();
+        foreach (var item in album.Artists)
+        {
+            if (item.Status == true)
+            {
+                listArtistID.Add(item.ID);
+            }
+
+        }
+
+        var arrayArtistID = @Html.Raw(Json.Encode(listArtistID));
+
+        <text>
+        $('#SongArtistModal').val(@arrayArtistID);
+
+
+        $('#fileName').text('@album.Image');
+        </text>
+
+
+    }
+
+
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker({ title: 'Chưa chọn ca sĩ' });
+
+
+    });
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#uploadAlbumFile").change(function () {
+        readURL(this);
+    });
+</script>

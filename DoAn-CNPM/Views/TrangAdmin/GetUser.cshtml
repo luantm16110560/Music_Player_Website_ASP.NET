@@ -1,0 +1,119 @@
+﻿
+
+
+@{
+    List<DoAn_CNPM.Models.User> listUser = ViewBag.listUser;
+}
+
+<!-- Page level plugins -->
+<script src="/Assets/admin/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Người dùng</h1>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Bảng thống kê</h6>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.message))
+    {
+        <div class="alert alert-info">
+            <strong>Thông báo</strong> @ViewBag.message
+        </div>
+    }
+
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="UserDataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Tài khoản người dùng</th>
+                        <th>Tên người dùng</th>
+                        <th>Trạng thái</th>
+                        <th>Loại tài khoản</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in listUser)
+                    {
+                        <tr>
+                            <td>@item.UserName</td>
+                            <td>@item.Name</td>
+
+                            <td>
+                                <div class="custom-control custom-checkbox">
+                                    @if (item.Status == true)
+                                    {
+                                        <input type="checkbox" checked readonly class="custom-control-input" id="isLockUser">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" readonly class="custom-control-input" id="isLockUser">
+                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                    }
+
+                                </div>
+                            </td>
+                            @if (item.Role == true)
+                            {
+                                <td>Quản trị</td>
+                            }
+                            else
+                            {
+                                <td> Thường </td >
+                            }
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button class="btn btn-success " name="" onclick="AddOrEdit(4,false)">
+                Xem thông tin người dùng
+            </button>
+            <button class="btn btn-success " name="" onclick="LockOrUnlockUser()">
+                Khóa/Mở khóa người dùng
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#UserDataTable').DataTable();
+
+    //chọn album
+    $('#UserDataTable tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            selectedObj = [];
+        }
+        else {
+            $('#UserDataTable tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            selectedObj = [];
+            $(this).find('td').each((index, element) => {
+                if (index == 2) {
+                    var val = $(this).find('#isLockUser').attr('checked');
+                    console.log(val);
+                    if (val) {
+                        selectedObj.push(true);
+                    }
+                    else {
+                        selectedObj.push(false);
+                    }
+                    
+                }
+                else {
+                    selectedObj.push($(element).text());
+                }
+                
+            });
+            console.log(selectedObj);
+        }
+    });
+</script>
+

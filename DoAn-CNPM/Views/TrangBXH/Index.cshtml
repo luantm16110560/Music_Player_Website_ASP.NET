@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "RankForWeek";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    List<DoAn_CNPM.Models.Song> listSong = ViewBag.listSong;
+
+}
+
+<link rel="stylesheet" href="~/Assets/css/TrangBXH.css" />
+
+<div class="col-lg-10 offset-lg-1" id="body">
+    <div class="headerBXH">
+        <!-- label -->
+        <label class="titleLabel">BXH bài hát</label>
+        <div class="headerTab">
+                <ul class="list">
+                    <li class="currentTab "><a  id="overviewBtn" href="#">Tuần</a></li>
+                    <li><a id="introBtn"  href="#">Tháng</a></li>
+                    <li><a href="#"  >Nhiều lượt nghe nhất</a></li>
+                </ul>
+        </div>
+        
+    </div>
+
+    <!-- danh sách xếp hạng-->
+    <div class="listBXH">
+        <!--Button nghe tất cả-->
+        <div class=" playAll ">
+            <a href="@Url.Action("PlayRankForWeek","TrangNgheNhac")"><i class="fas fa-play-circle"></i> <span>Nghe tất cả</span></a>
+        </div>
+
+        @if (listSong != null && listSong.Count > 0)
+            {
+                int i = 1;
+                foreach (var item in listSong)
+                {
+                    <!-- item in list-->
+                    <div class=" item ">
+                        <span class="rank">@i </span>
+                        <div class="content ">
+                            @*<div class="imgArtist"><img src="~/Assets/image/avartarArtist/LouHoang.jpg" alt=""></div>*@
+                            <div class="imgArtist" style="background:url('/Assets/image/avartarArtist/@(item.Artists.FirstOrDefault().Image)') "></div>
+                            <div class="details ">
+                                <a href="@Url.Action("Index","TrangNgheNhac", new { id=item.ID})" class="songName" title="@item.Name">@item.Name</a>
+                                <p>
+                                   @foreach (var it in item.Artists)
+                                   {
+                                       if (it != item.Artists.LastOrDefault())
+                                       {
+                                        <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+                                                <span>&#44;</span>
+                                       }
+                                       else
+                                       {
+                                        <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+
+                                       }
+                                   }
+                                </p>
+                            </div>
+                            <div class="controls">
+
+                                <div class="allcon">
+                                    <!-- nút info-->
+                                    <a href="@Url.Action("Index","TrangNgheNhac",new { id=item.ID})" class="info"><img src="~/Assets/image/icon/info.png" alt=""></a>
+                                    <!-- nút thêm vào playlist-->
+                                    <a class="addSongToPlayList" href=""><img onclick="addPlayListGeneral('@item.ID'); return false;" src="~/Assets/image/icon/themVao.png" alt=""></a>
+                                    <!-- nút tải xuống-->
+                                    <a href="@Url.Content("~/Assets/singer/"+item.FileName)" download="@item.Name" onclick="downloadMP3File(); " class="downloadSong"><img src="~/Assets/image/icon/download.png" alt=""></a>
+                                </div>
+                                <p class="views">@item.ViewsPerWeek lượt nghe</p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                i++;
+                                    }
+                                }
+        
+
+    </div>
+</div>
+
+@{ 
+    bool logged = false;
+    if (Session["user"] != null)
+    {
+        logged = true;
+    }
+}
+<script>
+    var logged = @logged.ToString().ToLower();
+</script>
+<script src="~/Assets/js/TrangBXH.js"></script>

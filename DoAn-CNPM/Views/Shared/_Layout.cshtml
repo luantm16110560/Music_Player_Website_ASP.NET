@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Website nghe nhạc giải trí</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="~/Assets/image/icon/page-icon.png">
+   
+    <link rel="stylesheet" href="~/Assets/css/bootstrap.min.css">
+    <script src="~/Assets/js/bootstrap.min.js"></script>
+    <script src="~/Assets/js/popper.min.js"></script>
+   
+    <script src="/Assets/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="~/Assets/css/Menu.css">
+    <script src="~/Assets/js/Menu.js"></script>
+    <script src="~/Assets/js/HashMD5.js"></script>
+
+</head>
+
+<body >
+
+    <!--header-->
+    <div class="header">
+
+        <a href="#">
+            <img src="~/Assets/image/icon/icon_Index.png" alt="" id="icon_index">
+        </a>
+        <ul class="menu">
+            <li><a href="/TrangChu/Index">TRANG CHỦ</a></li>
+            <li>
+                <a href="@Url.Action("Index","TrangBXH")">BXH</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index","TrangAlbum")">ALBUM</a>
+               
+            </li>
+            <li>
+                <a href="@Url.Action("AllArtist","TrangNgheSi")">NGHỆ SĨ</a>
+            </li>
+
+            @{ 
+                bool login = false;
+                if (Session["user"] != null)
+                {
+                    login = true;
+                }
+            }
+
+            <li><a onclick="checkLogin(@login.ToString().ToLower())" href="@Url.Content("/TrangPlayList/AllPlayList")">NHẠC CÁ NHÂN</a></li>
+        </ul>
+        <div class="search">
+            <a href="#" onclick="searchAll(); return false;"><img src="~/Assets/image/icon/icon_search.png" alt=""></a>
+            <input type="text" placeholder="Tìm kiếm..." id="txtSearch">
+        </div>
+
+        @if (Session["user"] == null)
+        {
+            <div class="user">
+            <img src="~/Assets/image/icon/icon_user_.png" alt="">
+            <a href="#" id="userName">Đăng nhập</a>
+            </div>
+        }
+        else
+        {
+            var user = Session["user"] as DoAn_CNPM.Models.User;
+            <div class="user">
+            <img src="~/Assets/image/icon/icon_user_.png" alt="">
+                <a href="">@user.UserName</a>
+               
+                    <ul class="account">
+                                <li><a href="/TrangDangNhap/Logout">Đăng xuất</a></li>
+                    </ul>
+                
+                
+            </div>
+        }
+        
+    </div>
+
+
+        @RenderBody()
+
+
+    <!-- addplaylist modal-->
+    <ul class="addPlayListUL" id="addPlayList"></ul>
+
+    <!-- annouce modal-->
+    <div class="addSongStatus" style="display:none">
+        <img src="" />
+        <p id="annouce">dasdsadasd</p>
+    </div>
+
+    <script>
+        function searchAll() {
+            if ($('#txtSearch').val().length > 0) {
+                location.href = "@Url.Action("Search", "TrangChu")" + "?textSearch=" + $('#txtSearch').val();
+            }
+        }
+
+        $("#txtSearch").on('keyup', function (e) {
+            if (e.keyCode == 13) {
+                searchAll();
+            }
+        });
+    </script>
+</body>
+</html>

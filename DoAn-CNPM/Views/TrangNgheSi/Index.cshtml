@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    DoAn_CNPM.Models.Artist artist = ViewBag.artist;
+    List<DoAn_CNPM.Models.Song> listSong = ViewBag.listSong;
+    bool follow = ViewBag.follow;
+}
+
+<link rel="stylesheet" href="~/Assets/css/TrangChiTietNgheSi.css">
+
+<div class="body col-lg-10 offset-lg-1" id="body">
+    <div class="backgroundImg">
+
+        @if (artist.Background == null || artist.Background == "")
+        {
+            <img src="~/Assets/image/backgroundArtist/default.png" alt="">
+        }
+        else
+        {
+            <img src="~/Assets/image/backgroundArtist/@(artist.Background)" onerror="this.src='@Url.Content("~/Assets/image/backgroundArtist/default.png")'" alt="">
+        }
+
+    </div>
+
+    <div class="profile">
+        <div class="img">
+            <img src="~/Assets/image/avartarArtist/@(artist.Image)" onerror="this.src='/Assets/image/icon/singer-default.jpg'" alt="">
+        </div>
+        <div class="detail">
+            <a class="name" style="color:white">@artist.Name</a>
+            <p class="follow"><span>@artist.Follows</span> người theo dõi</p>
+        </div>
+
+        @if (follow)
+        {
+            <a href="#" onclick="followArtist('@artist.ID'); return false;" class="btnfollow" style="color:#20b484"><img src="/Assets/image/icon/btnFollowed.png" alt="">Quan tâm</a>
+        }
+        else
+        {
+            <a href="#" onclick="followArtist('@artist.ID'); return false;" class="btnfollow"><img src="/Assets/image/icon/btnFollow.png" alt="">Quan tâm</a>
+        }
+
+        
+    
+    
+    
+    </div>
+
+    <div class="headerTab">
+        <ul class="list">
+            <li class="currentTabInList"><a id="overviewBtn" href="#">Tổng quan</a></li>
+            <li><a id="introBtn" href="#">Giới thiệu</a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+
+        <!-- Tổng quan-->
+        <div class="overviewBody" id="overviewBody">
+            <div class="Song">
+                <div class="title">
+                    <p>Bài hát</p>
+
+                    @if (listSong != null && listSong.Count > 0)
+                    {
+                        <a href="#" onclick="playAllSong(); return false;" class="playAll"><img src="/Assets/image/icon/playAll.png" alt="">Nghe tất cả</a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="annouce('Danh sách bài hát rỗng'); return false;" class="playAll"><img src="/Assets/image/icon/playAll.png" alt="">Nghe tất cả</a>
+                    }
+                    
+                
+                </div>
+
+                <div class="bodyInSong">
+                    <div class="img">
+                        <img src="~/Assets/image/avartarArtist/@(artist.Image)" onerror="this.src='/Assets/image/icon/singer-default.jpg'" alt="">
+                    </div>
+                    <!-- danh sách-->
+                    <ul class="listSong">
+                        <!-- từng item trong danh sách-->
+
+                        @foreach (var item in listSong)
+                        {
+                            <li class="item">
+                                <a href="@Url.Action("Index", "TrangNgheNhac", new { id = item.ID })">
+                                    <p class="info">
+                                        <span class="songName" title="@item.Name">
+                                            @item.Name
+                                        </span>
+
+                                        @{ 
+                                            string artistNames = "";
+                                            foreach (var it in item.Artists)
+                                            {
+                                                artistNames = artistNames + it.Name + ", ";
+                                            }
+                                            artistNames = artistNames.Substring(0, artistNames.Length - 2);
+                                        }
+
+                                        <span class="artistName" title="@artistNames">
+                                            @artistNames
+                                        </span>
+                                    </p>
+                                </a>
+                                <div class="detail"> <a href="@Url.Action("Index", "TrangNgheNhac", new { id = item.ID })"><img src="~/Assets/image/icon/info.png" alt=""></a></div>
+
+
+                                <div class="add"> <img onclick="addPlayListGeneral('@item.ID')" src="~/Assets/image/icon/addPlaylistArtistDetails.png" alt="">   </div>
+
+                                <div class="download"> <a href="@Url.Content("~/Assets/singer/" + @item.FileName)" onclick="downloadMP3File(@item.ID)" download="@item.Name"><img src="~/Assets/image/icon/download.png" alt=""></a> </div>
+                            </li>
+                                            }
+
+                       
+
+                   
+                     </ul>
+             </div>
+
+            </div>
+            <div class="Album">
+                <!-- label -->
+                <div class=" title" id="album">
+                    <p>Album</p>
+                </div>
+
+
+
+                <!-- list album-->
+                <div class="listAlbum">
+
+            
+                        @if (artist.Albums.Count > 0)
+                        {
+
+                            foreach (var item in artist.Albums)
+                            {
+                                 <!-- item album-->
+                                <div class=" itemAlbum">
+                                    <a href="@Url.Action("PlayAlbum","TrangNgheNhac",new { id=item.ID })" class="overflowText" title="@item.Name">
+
+                                        <div class="img" style="background:url('/Assets/image/imageAlbum/@(item.Image)')"></div>
+                                        <!-- <img title="Những Bài Hát Nghe Là Thấy Tết" src="image/imageAlbum/h1.jpg" alt="" /> -->
+                                        <p class="albumName">@item.Name</p>
+                                        <p>
+                                            @foreach (var it in item.Artists)
+                                            {
+                                                if (it != item.Artists.LastOrDefault())
+                                                {
+                                                    <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+                                                    <span style="color:white">&#44;&nbsp;</span>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+
+                                                }
+                                            }
+                                        </p>
+                                    </a>
+                                </div>
+                            }
+
+
+                        }
+                        else
+                        {
+                            <p style="color: white; font-size20px; font-weight: 700">Nghệ sĩ này chưa có album</p>
+                        }
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Giới thiệu-->
+        <div class="introduceBody" style="display: none" id="introduceBody">
+            <div class="content" style="color: white;">
+                @if (artist.Description != null)
+                {
+                    @Html.Raw(artist.Description)
+                }
+                else
+                {
+                    <p style="color:white;">Hiện tại chưa có mô tả về nghệ sĩ</p>
+                }
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+@using Newtonsoft.Json
+@{
+    bool kq = false;
+    if (@Session["user"] != null)
+    {
+        kq = true;
+    }
+
+    List<int> listSongID = new List<int>();
+    foreach (var item in listSong)
+    {
+        listSongID.Add(item.ID);
+    }
+}
+
+<form style="display:none" method="post" action="/TrangNgheNhac/PlaySongList">
+    <input type="hidden" value="" id="data" name="listSong" />
+    <input type="submit" id='playAll' />
+</form>
+
+<script>
+    var logged = @kq.ToString().ToLower();
+
+    var list = @Html.Raw(JsonConvert.SerializeObject(listSongID, Formatting.Indented,
+    new JsonSerializerSettings()
+    {
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    }));
+</script>
+<script src="~/Assets/js/TrangChiTietNgheSi.js"></script>

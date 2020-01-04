@@ -1,0 +1,343 @@
+﻿
+@{
+    ViewBag.Title = "AllPlayList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    List<DoAn_CNPM.Models.Song> listFaSong = ViewBag.listFaSong;
+    List<DoAn_CNPM.Models.Playlist> listPlayList = ViewBag.listPLayList;
+    List<DoAn_CNPM.Models.Artist> listArtist = ViewBag.listArtist;
+    List<DoAn_CNPM.Models.Genre> listGenre = ViewBag.listGenre;
+    DoAn_CNPM.Models.User user = (DoAn_CNPM.Models.User)Session["user"];
+    List<DoAn_CNPM.Models.Artist> listArtistCare = ViewBag.listArtistCare;
+}
+
+<link rel="stylesheet" href="/Assets/css/TrangAllPlayList.css">
+
+<script src="~/Assets/js/ckeditor/ckeditor.js"></script>
+<script src="~/Assets/js/ckeditor/config.js"></script>
+
+<div class="main col-lg-10 offset-lg-1">
+
+    <ul class="row col-12 mainTab">
+        <li class="selectedMainTab"><p>Nhạc cá nhân</p></li>
+        <li class=""><p>Upload nhạc</p></li>
+        <li class=""><p>Thông tin tài khoản</p></li>
+        <li ><p>Nghệ sĩ quan tâm</p></li>
+    </ul>
+
+    <div id="privateSong" class="allPlayListContent">
+        <!-- danh sách bài hát yêu thích-->
+        <div class="favoriteSong">
+            <div class="headerFavorite">
+                <p class="title">
+                    Danh sách bài hát yêu thích
+                </p>
+
+                @if (listFaSong != null && listFaSong.Count > 0)
+                {
+                    <a href="@Url.Content("/TrangNgheNhac/PlayFavoriteListSong")" class="playAll"><img src="/Assets/image/icon/playAll.png" alt="">Nghe tất cả</a>
+                }
+                else
+                {
+                    <a href="#" onclick="annouce('Danh sách bài hát rỗng'); return false;" class="playAll"><img src="/Assets/image/icon/playAll.png" alt="">Nghe tất cả</a>
+                }
+                
+            
+            </div>
+
+            <div class="bodyFavorite">
+                <div class="imageFavorite">
+                    <img src="/Assets/image/icon/FavoriteImage.png" alt="">
+                </div>
+
+                @{
+                    int index = 1;
+                }
+
+                <!-- danh sách-->
+
+                <ul class="listSong">
+                    <!-- từng item trong danh sách-->
+                    @if (listFaSong != null && listFaSong.Count > 0)
+                    {
+                        foreach (var item in listFaSong)
+                        {
+                            <li class="item">
+                                <a href="#">
+                                    <p class="number">@index</p>
+                                    <p class="info">
+                                        <span class="songName" title="@item.Name">
+                                            @item.Name
+                                        </span>
+
+                                        @{
+                                            string ten = "";
+                                            foreach (var it in item.Artists)
+                                            {
+                                                ten = ten + " " + it.Name + ",";
+                                            }
+                                            ten = ten.Substring(0, ten.Length - 1);
+                                        }
+
+                                        <span class="artistName" title="@ten">
+                                            @ten
+                                        </span>
+                                    </p>
+                                    <div class="detail" onclick="location.href='/TrangNgheNhac/Index?id=@item.ID'"><img src="/Assets/image/icon/info.png" alt=""></div>
+                                    <div class="del" onclick="delFavoriteSong(@item.ID)"><img src="/Assets/image/icon/del.png" alt=""></div>
+                                    <div class="download"><img src="/Assets/image/icon/download.png" alt="" onclick="downloadFile('@item.Name','@Url.Content("~/Assets/singer/"+item.FileName)')"></div>
+                                </a>
+                            </li>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <a style="color: white">Không có bài hát trong danh sách yêu thích</a>
+                    }
+
+                </ul>
+            </div>
+
+
+        </div>
+
+        <hr class="hrTag">
+
+        <!-- danh sách tất cả các playlist-->
+        <div class="allPlayList">
+            <div class="headerPlayList">
+                <p>Danh sách Playlist của bạn</p>
+            </div>
+
+            <div class="bodyPlayList">
+                <!-- danh sách-->
+                <div class="listPlayList">
+
+                    @if (listPlayList != null && listPlayList.Count > 0)
+                    {
+                        foreach (var item in listPlayList)
+                        {
+                            <!-- item-->
+                            <a class="itemPlayList" title="Có @item.Song_PlayList.Count trong playlist"
+                               onclick="checkPlayList(@item.Song_PlayList.Count);"
+                               href="@Url.Action("PlaySongsInPlayList", "TrangNgheNhac",new { id=item.ID })">
+                                <div class="itemImage" style="background:url('/Assets/image/icon/PlayListImage.png');">
+                                    @*<img src="/Assets/image/icon/PlayListImage.png" alt="">*@
+                                </div>
+                                <p class="playListName" title="@item.Name">
+                                    @item.Name
+                                </p>
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a style="color:white">Không có playlist trong danh sách</a>
+                    }
+                    
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="uploadSong" class="allPlayListContent row col-12">
+
+
+        <form id="myUploadForm" method="post" action="/TrangPlayList/UploadSong" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Tên bài hát </label>
+                <input type="text" class="form-control" name="songName" id="uploadSongName" aria-describedby="emailHelp" placeholder="Tên bài hát">
+                <small id="emailHelp" class="form-text text-muted">Bắt buộc</small>
+                
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Lời bài hát</label>
+                <textarea id="uploadSongLyrics" name="lyrics"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Chọn tệp nhạc</label>
+                <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" accept="audio/mp3" id="uploadSongFile" name="filename">
+                    <label class="custom-file-label" for="customFile" id="fileName">Choose file</label>
+                    <small id="emailHelp" class="form-text text-muted">Vui lòng chọn đúng tệp nhạc mp3, bắt buộc</small>
+                </div>
+                
+            </div>
+
+            <div class="form-group">
+                <label for="sel1">Chọn nghệ sĩ</label>
+                <select class="form-control" id="uploadArtistName" name="artist">
+
+                    @foreach (var item in listArtist)
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Bắt buộc</small>
+            </div>
+
+            <div class="form-group">
+                <label for="sel1">Chọn người sáng tác</label>
+                <select class="form-control"  name="composer" id="uploadComposer">
+
+                    @foreach (var item in listArtist)
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Bắt buộc</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="sel1">Chọn thể loại</label>
+                <select class="form-control" name="genre" id="uploadGenre">
+
+                    @foreach (var item in listGenre)
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Bắt buộc</small>
+            </div>
+
+                <button type="button" onclick="uploadSong()"   class="uploadBTN">Tải lên</button>
+        </form>
+
+    </div>
+
+    <div id="profile" class="profile allPlayListContent">
+        <div class="container bootstrap snippet">
+            <div class="row">
+                <div class="col-sm-10"><h3 style="color:white;">Thông tin tài khoản</h3></div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="home">
+                            <hr>
+                            <form class="form" action="@Url.Action("UpdateProfile","TrangDangNhap")" method="post" id="UpdateProfile">
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="first_name"><h4>Tài khoản</h4></label>
+                                        <input type="text" disabled class="form-control" value="@user.UserName" name="Username" id="username" placeholder="@user.UserName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="last_name"><h4>Họ và tên</h4></label>
+                                        <input type="text" class="form-control" name="Name" id="name" placeholder="@user.Name" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="phone"><h4>Số điện thoại</h4></label>
+                                        <input type="text" class="form-control" name="Phone" id="phone" placeholder="@user.Phone" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="email"><h4>Email</h4></label>
+                                        <input type="email" class="form-control" name="Email" id="email" placeholder="@user.Email" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="password"><h4>Mật khẩu cũ</h4></label>
+                                        <input type="password" class="form-control" name="OldPassword" id="oldPass" placeholder="Mật khẩu cũ">
+                                        <small class="form-text text-muted">Nhập nếu bạn muốn đổi mật khẩu mới</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-6">
+                                        <label for="password"><h4>Mật khẩu mới</h4></label>
+                                        <input type="password" class="form-control" name="Password" id="password" placeholder="Mật khẩu mới" >
+                                        <small class="form-text text-muted">Nhập nếu bạn muốn đổi mật khẩu mới</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="password2"><h4>Xác nhận mật khẩu mới</h4></label>
+                                        <input type="password" class="form-control" id="verifyPassword" placeholder="Xác nhận mật khẩu mới" >
+                                        <small  class="form-text text-muted">Nhập nếu bạn muốn đổi mật khẩu mới</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <br>
+                                        <button class="uploadBTN col-1" id="btnSubmitProfile" type="submit"> Lưu</button>
+                                        <button class="uploadBTN col-1" type="reset"> Hủy</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <hr>
+
+                        </div><!--/tab-pane-->
+                    </div><!--/tab-pane-->
+                </div><!--/tab-content-->
+            </div><!--/col-9-->
+        </div>
+    </div>
+    
+    <div id="artistCare" class="profile allPlayListContent">
+        <div class="listArtist col-lg-12 row">
+            <!-- item-->
+
+            @if (listArtistCare != null && listArtistCare.Count > 0)
+            {
+                foreach (var item in listArtistCare)
+                {
+                    <div class="itemArtist col-lg-3 row">
+                        <a href="@Url.Action("Index", "TrangNgheSi", new { id = item.ID })" class="col-lg-12 row item">
+                            @*<img class="col-lg-12" src="~/Assets/image/avartarArtist/@(item.Image)" onerror="">*@
+                            <div class="imgArtist col-lg-12" style="background:url('/Assets/image/avartarArtist/@(item.Image)')"></div>
+                            <span class="col-lg-10 offset-lg-1" title="@item.Name">@item.Name</span>
+                            <span class="col-lg-10 offset-lg-1 follow">@item.Follows quan tâm</span>
+                        </a>
+
+                            <a class="col-lg-6 offset-lg-2 btnFollow" style="color: #20b484;" href="#" onclick="followArtistInAllArtistPage('@item.ID',this); return false;">Quan tâm</a>
+
+
+
+                    </div>
+                }
+            }
+            else
+            {
+                <p style="color:white">Không có nghệ sĩ trong thư viện nhạc cá nhân</p>
+            }
+        </div>
+    </div>
+
+</div>
+
+@{ 
+    bool logged = false;
+    if(Session["user"] != null)
+    {
+        logged = true;
+    }
+
+}
+
+<script>
+    var logged = @logged.ToString().ToLower();
+</script>
+<script src="/Assets/js/TrangAllPlayList.js"></script>

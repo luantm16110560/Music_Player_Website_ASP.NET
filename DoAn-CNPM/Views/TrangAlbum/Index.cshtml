@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    List<DoAn_CNPM.Models.Album> listAlbum = ViewBag.album;
+
+}
+
+
+<link rel="stylesheet" href="~/Assets/css/TrangAlbum.css" />
+
+
+<div class="col-lg-10 offset-lg-1" id="body">
+
+    <!-- danh sách album-->
+    <div class="col-lg-12 albumClass">
+
+        <div class="row">
+            <div class="col-lg-2 labelTab" id="album">
+                <a href="#">Album</a>
+            </div>
+        </div>
+        <!-- list album-->
+        <div class="row listAlbum">
+            <!-- item album-->
+            @foreach (var item in listAlbum)
+            {
+                <div class="col-lg-3 itemAlbum">
+                    <a href="@Url.Action("PlayAlbum", "TrangNgheNhac",new { id=item.ID })">
+                        @*<img title="@item.Name" src="@Url.Content("~/Assets/image/imageAlbum/" + @item.Image)" alt="" />*@
+                        <div class="imgAlbum" style="background:url('/Assets/image/imageAlbum/@(item.Image)') no-repeat center"></div>
+                    </a>
+                    <a href="@Url.Action("PlayAlbum", "TrangNgheNhac",new { id=item.ID })" title="@item.Name">@item.Name</a>
+                    <p>
+                        @foreach (var it in item.Artists)
+                        {
+                            if (it != item.Artists.LastOrDefault())
+                            {
+                                <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+                                                <span>&#44;&nbsp;</span>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Index","TrangNgheSi",new { id= it.ID })" title="@it.Name">@it.Name</a>
+
+                            }
+                        }
+
+
+                    </p>
+
+                </div>
+
+            }
+        </div>
+
+        
+    </div>
+
+</div>
+
+    <script src="~/Assets/js/TrangAlbum.js"></script>

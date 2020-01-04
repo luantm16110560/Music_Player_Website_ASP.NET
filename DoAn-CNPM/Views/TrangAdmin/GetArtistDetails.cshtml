@@ -1,0 +1,199 @@
+﻿
+
+
+@{
+    DoAn_CNPM.Models.Artist artist = ViewBag.artist;
+}
+
+<script src="~/Assets/admin/js/bootstrap.min.js"></script>
+<script src="~/Assets/admin/js/popper.min.js"></script>
+
+
+<form class="container-fluid" action="@Url.Action("AddOrUpdateArtist","TrangAdmin")" method="post" enctype="multipart/form-data">
+
+    <div class="alert alert-danger" role="alert" style="font-size: 20px; display: none;"
+         id="errorAdminAccountModal">
+
+    </div>
+    <!-- nội dung của modal-->
+    @if (artist != null)
+    {
+        <div class="form-group">
+            <label for="exampleInputPassword1">Mã nghệ sĩ</label>
+            <input type="text" name="ID" class="form-control" readonly value="@artist.ID">
+        </div>
+    }
+
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Tên nghệ sĩ</label>
+        @if (artist != null)
+        {
+            <input type="text" required name="Name" value="@artist.Name" class="form-control">
+        }
+        else
+        {
+            <input type="text" required name="Name"  class="form-control">
+        }
+            
+       
+
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Mô tả</label>
+        <textarea type="text" name="Description" id="ArtistDescriptionModal" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Lượt theo dõi</label>
+        @if (artist != null)
+        {
+            <input type="text" name="Follows" value="@artist.Follows" class="form-control">
+        }
+        else
+        {
+            <input type="text" name="Follows" value="" class="form-control">
+        }
+    </div>
+
+   
+    <div class="form-group">
+        <label for="exampleInputPassword1">Ảnh nghệ sĩ</label>
+        <div class="custom-file mb-3">
+            @if (artist != null)
+            {
+                <input type="file" class="custom-file-input" id="inputImage" name="artistImageFile">
+            }
+            else
+            {
+                <input type="file" required class="custom-file-input" id="inputImage" name="artistImageFile">
+            }
+
+            <label class="custom-file-label" for="customFile" id="imageFileName">Chọn ảnh</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="image-parent">
+            @if (artist != null)
+            {
+                <img src="~/Assets/image/avartarArtist/@(artist.Image)" class="img-fluid" id="previewImage" alt="Responsive image">
+            }
+            else
+            {
+                <img src="#" class="img-fluid" id="previewImage" alt="Responsive image">
+            }
+            
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Ảnh nền nghệ sĩ</label>
+        <div class="custom-file mb-3">
+            @if (artist != null)
+            {
+                <input type="file" class="custom-file-input" id="inputBackground" name="backGroundImageFile">
+            }
+            else
+            {
+                <input type="file" required class="custom-file-input" id="inputBackground" name="backGroundImageFile">
+            }
+
+            <label class="custom-file-label" for="customFile" id="backgroundFileName">Chọn ảnh</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="image-parent">
+            @if (artist != null)
+            {
+                <img src="~/Assets/image/backgroundArtist/@artist.Background" class="img-fluid" id="previewBackground" alt="Responsive image">
+            }
+            else
+            {
+                <img src="#" class="img-fluid" id="previewBackground" alt="Responsive image">
+            }
+            
+        </div>
+    </div>
+    <div class="form-check">
+        @if (artist != null)
+        {
+            if (artist.Status == true)
+            {
+                <input name="Status" type="checkbox" class="form-check-input" checked >
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+            else
+            {
+                <input name="Status" type="checkbox" class="form-check-input" >
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+
+
+        }
+        else
+        {
+            <input name="Status" checked required type="checkbox" class="form-check-input" >
+            <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+        }
+    </div>
+
+    @if (artist != null)
+    {
+        <button type="submit" class="btn btn-success">Lưu</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-success">Tạo</button>
+    }
+
+</form>
+
+
+<script>
+    //ckeditor
+    CKEDITOR.replace('ArtistDescriptionModal');
+    CKEDITOR.config.entities_latin = false;
+    //upload file
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    @if (artist != null) {
+     <text>
+
+        var ArtistDescription = '@HttpUtility.JavaScriptStringEncode(artist.Description)';
+        if (ArtistDescription)
+            CKEDITOR.instances.ArtistDescriptionModal.setData(ArtistDescription);
+
+
+        $('#imageFileName').text('@artist.Image');
+
+         $('#backgroundFileName').text('@artist.Image');
+        
+        </text>
+
+
+    }
+
+
+    function readURL(input,img) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#' + img).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#inputImage").change(function () {
+        readURL(this,'previewImage');
+    });
+
+    $("#inputBackground").change(function () {
+        readURL(this, 'previewBackground');
+    });
+</script>
+

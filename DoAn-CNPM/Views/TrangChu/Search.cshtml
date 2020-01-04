@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Assets/css/TrangTimKiem.css">
+
+@{ 
+    List<DoAn_CNPM.Models.Song> listSong = ViewBag.listSong;
+    List<DoAn_CNPM.Models.Artist> listArtist = ViewBag.listArtist;
+    List<DoAn_CNPM.Models.Album> listAlbum = ViewBag.listAlbum;
+
+}
+
+<div class="main col-lg-10 offset-lg-1 bodyContent">
+
+    <div class="row col-lg-12"><h3 style="color: white">Kết quả tìm kiếm của từ khóa "@ViewBag.textSearch"</h3></div>
+
+    <!-- kết quả tìm kiếm bài hát-->
+    <div class="allSong col-lg-12">
+
+        <div class="headerAllSong">
+            <p>Bài hát</p>
+        </div>
+
+        
+        
+            
+            @if (listSong != null && listSong.Count > 0)
+            {
+                <!-- danh sách bài hát -->
+                <div class="listSongItem">
+                    @foreach (var item in listSong)
+                    {
+
+                    <!-- từng bài hát-->
+                    <a href="@Url.Action("Index","TrangNgheNhac",new {id=item.ID })"  class="item">
+                        <div class="songImg">
+                            <img src="~/Assets/image/avartarArtist/@(item.Artists.First().Image)" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="songName" style="color:white" title="@item.Name">@item.Name</p>
+
+                            @{
+                                string artistName = "";
+                                foreach (var it in item.Artists)
+                                {
+                                    artistName = artistName + it.Name + ", ";
+                                }
+                                artistName = artistName.Substring(0, artistName.Length - 2);
+                            }
+
+                            <p class="artistName" title="@artistName">@artistName</p>
+                        </div>
+
+                    </a>
+                    }
+                </div>
+              }
+              else
+              {
+                    <p class="col-lg-12" style="padding-left: 0px; margin-left:0px;">Không tìm thấy bài hát </p>
+              }
+
+                
+    </div>
+
+    <!-- kết quả tìm kiếm album-->
+    <div class="allAlbum col-lg-12">
+        <div class="headerAllAlbum">
+            <p>Album</p>
+        </div>
+        <!-- danh sách album-->
+        <div class="listAlbumItem row">
+            <!-- từng album-->
+
+            @if (listAlbum != null && listAlbum.Count > 0)
+        {
+            foreach (var item in listAlbum)
+            {
+        <a href="@Url.Action("PlayAlbum","TrangNgheNhac",new {id=item.ID })" class="item">
+            <div class="albumImg">
+                <img src="~/Assets/image/imageAlbum/@(item.Image)" alt="">
+            </div>
+            <div class="content">
+                <p class="albumName" title="@item.Name">@item.Name</p>
+
+                @{
+                            string artistName = "";
+                            foreach (var it in item.Artists)
+                            {
+                                artistName = artistName + it.Name + ", ";
+                            }
+                            artistName = artistName.Substring(0, artistName.Length - 2);
+                }
+
+                <p class="artistName" title="@artistName">@artistName</p>
+            </div>
+        </a>
+            }
+        }
+        else
+        {
+        <p class="col-lg-12" >Không tìm thấy album</p>
+        }
+
+
+
+        </div>
+    </div>
+
+    <!-- kết quả tìm kiếm cho nghệ sĩ-->
+    <div class="allArtist col-lg-12">
+        <div class="headerAllArtist">
+            <p>Nghệ sĩ</p>
+        </div>
+        
+            
+
+            @if (listArtist != null && listArtist.Count > 0)
+            {
+                <!-- danh sách artist-->
+                <div class="listArtist row">
+                    @foreach (var item in listArtist)
+                    {
+                        <!-- từng artist trong danh sách-->
+                        <a href="@Url.Action("Index","TrangNgheSi",new {id=item.ID })" class="item">
+                            <div class="artistImg">
+                                <img src="~/Assets/image/avartarArtist/@(item.Image)" onerror="this.src='@Url.Content("~/Assets/image/icon/defaultUser.png")'" alt="">
+                            </div>
+                            <p class="artistName" title="@item.Name">@item.Name</p>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                    <p class="col-lg-12 row" >Không tìm thấy ca sĩ</p>
+            }
+
+
+
+      </div>
+    
+
+</div>

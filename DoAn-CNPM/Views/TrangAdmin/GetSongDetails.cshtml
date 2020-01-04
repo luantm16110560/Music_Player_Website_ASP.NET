@@ -1,0 +1,285 @@
+﻿
+
+
+@{
+    DoAn_CNPM.Models.Song song = ViewBag.song;
+    List<DoAn_CNPM.Models.Album> listAlbum = ViewBag.listAlbum;
+    List<DoAn_CNPM.Models.Artist> listArtist = ViewBag.listArtist;
+    List<DoAn_CNPM.Models.Genre> listGenre = ViewBag.listGenre;
+}
+
+<script src="~/Assets/admin/js/bootstrap.min.js"></script>
+<script src="~/Assets/admin/js/popper.min.js"></script>
+
+
+            <form class="container-fluid" action="@Url.Action("AddOrUpdateSong","TrangAdmin")" method="post" enctype="multipart/form-data">
+
+                <div class="alert alert-danger" role="alert" style="font-size: 20px; display: none;"
+                     id="errorAdminAccountModal">
+
+                </div>
+                <!-- nội dung của modal-->
+                    @if (song != null)
+                    {
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mã bài hát</label>
+                            <input type="text" name="ID" class="form-control" readonly value="@song.ID">
+                        </div>
+                    }
+
+                       
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Tên bài hát</label>
+                    @if (song != null)
+                    {
+                        <input type="text" required name="Name" value="@song.Name" class="form-control">
+                    }
+                    else
+                    {
+                        <input type="text" required name="Name" value="" class="form-control">
+                    }
+                    
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Lời bài hát</label>
+                    <textarea type="text" name="Lyrics" id="SongLyricsModal" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Lượt xem</label>
+                    @if (song != null)
+                    {
+                        <input type="text"  name="Views" value="@song.Views" class="form-control">
+                    }
+                    else
+                    {
+                        <input type="text" name="Views" value="" class="form-control">
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Lượt yêu thích</label>
+                    @if (song != null)
+                    {
+                        <input type="text" name="Likes" value="@song.Likes" class="form-control">
+                    }
+                    else
+                    {
+                        <input type="text" name="Likes" value="" class="form-control">
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Album</label>
+                    <select class="custom-select" id="SongAlbumModal" name="Album">
+                        <option  selected>Chọn album</option>
+                        @foreach (var item in listAlbum)
+                        {
+                            <option value="@item.ID">@item.Name</option>
+                        }
+                    </select>
+                   
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Ca sĩ</label>
+                    @if (song != null)
+                    {
+                        <select id="SongArtistModal" required name="artist" class="selectpicker" multiple data-live-search="true">
+                            @foreach (var item in listArtist)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+
+                        </select>
+                    }
+                    else
+                    {
+                        <select id="SongArtistModal" required name="artist" class="selectpicker" multiple data-live-search="true">
+                            @foreach (var item in listArtist)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+
+                        </select>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Người sáng tác</label>
+                    @if (song != null)
+                    {
+                        <select  class="custom-select" required id="SongComposerModal" name="Composer">
+                            <option selected>Chọn người sáng tác</option>
+                            @foreach (var item in listArtist)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select required class="custom-select"  id="SongComposerModal" name="Composer">
+                            <option selected>Chọn người sáng tác</option>
+                            @foreach (var item in listArtist)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        </select>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Lượt xem theo tuần</label>
+                    @if (song != null)
+                    {
+                        <input type="text" name="ViewsPerWeek" value="@song.ViewsPerWeek" class="form-control">
+                    }
+                    else
+                    {
+                        <input type="text" name="ViewsPerWeek" value="" class="form-control">
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Lượt xem theo tháng</label>
+                    @if (song != null)
+                    {
+                        <input type="text" name="ViewsPerMonth" value="@song.ViewsPerMonth" class="form-control">
+                    }
+                    else
+                    {
+                        <input type="text" name="ViewsPerMonth" value="" class="form-control">
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Thể loại</label>
+                    @if (song != null)
+                    {
+                        <select id="SongGenreModal" required name="genre" class="selectpicker" multiple data-live-search="true">
+                            @foreach (var item in listGenre)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+
+                        </select>
+                    }
+                    else
+                    {
+                        <select id="SongGenreModal" required name="genre" class="selectpicker" multiple data-live-search="true">
+                            @foreach (var item in listGenre)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+
+                        </select>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Tệp</label>
+                    <div class="custom-file mb-3">
+                       @if (song != null)
+                       {
+                        <input type="file" class="custom-file-input" accept="audio/mp3" id="uploadSongFile" name="file">
+                       }
+                       else
+                       {
+                        <input required type="file" class="custom-file-input" accept="audio/mp3" id="uploadSongFile" name="file">
+                       }
+                        <label class="custom-file-label" for="customFile" id="fileName">Chọn file</label>
+                        <small id="emailHelp" class="form-text text-muted">Vui lòng chọn đúng tệp nhạc mp3, bắt buộc</small>
+                    </div>
+                </div>
+                <div class="form-check">
+                    @if (song != null)
+                    {
+                        if (song.Status == true)
+                        {
+                            <input name="Status" type="checkbox" class="form-check-input" checked  id="ActiveSongModal">
+                            <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+                        }
+                        else
+                        {
+                            <input name="Status" type="checkbox" class="form-check-input" id="ActiveSongModal">
+                            <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+                        }
+
+
+                    }
+                    else
+                    {
+                        <input name="Status" checked required type="checkbox" class="form-check-input" id="ActiveSongModal">
+                        <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+                    }
+                </div>
+                
+                @if (song != null)
+                {
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-success">Tạo</button>
+                }
+            
+            </form>
+
+
+<script>
+    //ckeditor
+    CKEDITOR.replace('SongLyricsModal');
+    //upload file
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+    //select album
+    @if (song != null) {
+     <text>
+    $('#SongAlbumModal').val(@song.Album);
+    var lyrics = '@HttpUtility.JavaScriptStringEncode(song.Lyrics)';
+    CKEDITOR.instances.SongLyricsModal.setData(lyrics);
+    </text>
+
+        //gắn artist vào multil select 
+        List<int> listArtistID = new List<int>();
+        foreach (var item in song.Artists)
+        {
+            if (item.Status == true)
+            {
+                listArtistID.Add(item.ID);
+            }
+
+        }
+
+        //gắn genre vào mutil select
+
+        List<int> listGenreID = new List<int>();
+        foreach (var item in song.Genres)
+        {
+            if (item.Status == true)
+            {
+                listGenreID.Add(item.ID);
+            }
+
+        }
+
+
+
+        var arrayArtistID = @Html.Raw(Json.Encode(listArtistID));
+        var arratGenreID = @Html.Raw(Json.Encode(listGenreID));
+        <text>
+        $('#SongArtistModal').val(@arrayArtistID);
+        $('#SongGenreModal').val(@arratGenreID);
+
+        $('#SongComposerModal').val(@song.Composer);
+
+        $('#fileName').text('@song.FileName');
+        </text>
+
+
+    }
+
+
+    $(document).ready(function () {
+        $('#SongArtistModal').selectpicker({ title: 'Chưa chọn ca sĩ' });
+        $('#SongGenreModal').selectpicker({ title: 'Chưa chọn thể loại' });
+
+    });
+
+
+    
+</script>

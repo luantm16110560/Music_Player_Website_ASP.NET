@@ -1,0 +1,19 @@
+{
+  "FilePath": "f:\\Study\\Semester1_Year4\\OOSD\\Project\\DoAn-CNPM\\DoAn-CNPM\\DoAn-CNPM.csproj",
+  "Configuration": {
+    "ConfigurationName": "UnsupportedRazor",
+    "LanguageVersion": "1.0",
+    "Extensions": [
+      {
+        "ExtensionName": "UnsupportedRazorExtension"
+      }
+    ]
+  },
+  "ProjectWorkspaceState": {
+    "TagHelpers": [],
+    "CSharpLanguageVersion": 703
+  },
+  "RootNamespace": null,
+  "Documents": [],
+  "SerializationFormat": "0.2"
+}

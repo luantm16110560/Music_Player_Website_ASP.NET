@@ -1,0 +1,97 @@
+﻿
+
+
+
+
+@{
+    DoAn_CNPM.Models.User user = ViewBag.user;
+}
+
+<script src="~/Assets/admin/js/bootstrap.min.js"></script>
+<script src="~/Assets/admin/js/popper.min.js"></script>
+
+
+<form class="container-fluid" >
+
+    <div class="alert alert-danger" role="alert" style="font-size: 20px; display: none;"
+         id="errorAdminAccountModal">
+
+    </div>
+    <!-- nội dung của modal-->
+    @if (user != null)
+    {
+        <div class="form-group">
+            <label for="exampleInputPassword1">Tài khoản</label>
+            <input type="text" name="ID" class="form-control" readonly value="@user.UserName">
+        </div>
+    }
+
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Tên người dùng</label>
+        @if (user != null)
+        {
+            <input type="text" readonly name="Name" value="@user.Name" class="form-control">
+        }
+        else
+        {
+            <input type="text" required name="Name" class="form-control">
+        }
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Email</label>
+        @if (user != null)
+        {
+            <input type="text" readonly name="Email" value="@user.Email" class="form-control">
+        }
+        else
+        {
+            <input type="text" required name="Email" class="form-control">
+        }
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Số điện thoại</label>
+        @if (user != null)
+        {
+            <input type="text" readonly name="Name" value="@user.Phone" class="form-control">
+        }
+        else
+        {
+            <input type="text" required name="Name" class="form-control">
+        }
+    </div>
+    
+    <div class="form-check">
+        @if (user != null)
+        {
+            if (user.Status == true)
+            {
+                <input name="Status" readonly type="checkbox" class="form-check-input" checked>
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+            else
+            {
+                <input name="Status" readonly type="checkbox" class="form-check-input">
+                <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+            }
+
+
+        }
+        else
+        {
+            <input name="Status" checked required type="checkbox" class="form-check-input">
+            <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
+        }
+    </div>
+
+</form>
+
+
+<script>
+
+
+   
+</script>
+

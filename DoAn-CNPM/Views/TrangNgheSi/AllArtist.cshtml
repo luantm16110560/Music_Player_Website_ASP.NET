@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "AllArtist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@{ 
+    List<DoAn_CNPM.Models.Artist> listArtist = ViewBag.listArtist;
+    List<int> listFollowed = ViewBag.listFollowed;
+}
+
+
+<link rel="stylesheet" href="~/Assets/css/TrangNgheSi.css" />
+
+<div class="row col-lg-10 offset-lg-1" id="body">
+    <!-- nghệ sĩ việt nam-->
+    <!-- label-->
+    <div class="col-lg-12 label">
+        <a href="">Nghệ sĩ</a>
+    </div>
+    <!-- danh sach nghệ sĩ-->
+    <div class="listArtist col-lg-12 row">
+        <!-- item-->
+
+        @if (listArtist != null && listArtist.Count > 0)
+        {
+            foreach (var item in listArtist)
+            {
+                <div class="itemArtist col-lg-3 row">
+                    <a href="@Url.Action("Index", "TrangNgheSi", new { id = item.ID })" class="col-lg-12 row item">
+                        @*<img class="col-lg-12" src="~/Assets/image/avartarArtist/@(item.Image)" onerror="">*@
+                        <div class="imgArtist col-lg-12" style="background-image:url('/Assets/image/avartarArtist/@(item.Image)'),url('/Assets/image/icon/singer-default.jpg')"></div>
+                        <span class="col-lg-10 offset-lg-1" title="@item.Name">@item.Name</span>
+                        <span class="col-lg-10 offset-lg-1 follow">@item.Follows quan tâm</span>
+                    </a>
+
+                    @if (listFollowed != null && listFollowed.Count > 0 && listFollowed.Contains(item.ID))
+                    {
+                        <a class="col-lg-6 offset-lg-2 btnFollow" style="color: #20b484;" href="#" onclick="followArtistInAllArtistPage('@item.ID',this); return false;">Quan tâm</a>
+                    }
+                    else
+                    {
+                        <a class="col-lg-6 offset-lg-2 btnFollow" href="#" onclick="followArtistInAllArtistPage('@item.ID',this); return false;">Quan tâm</a>
+                    }
+                    
+                
+                
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+@{ 
+    bool logged = false;
+    if (Session["user"] != null)
+    {
+        logged = true;
+    }
+}
+
+<script>
+    var logged = @logged.ToString().ToLower();
+</script>
+
+<script src="~/Assets/js/TrangNgheSi.js"></script>

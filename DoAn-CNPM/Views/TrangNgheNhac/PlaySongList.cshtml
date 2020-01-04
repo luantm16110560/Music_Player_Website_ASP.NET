@@ -1,0 +1,309 @@
+﻿
+@{
+    ViewBag.Title = "PlaySongList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+
+    @using Newtonsoft.Json;
+
+    var list = @Html.Raw(JsonConvert.SerializeObject(ViewBag.listID, Formatting.Indented,
+    new JsonSerializerSettings() {
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    }));
+</script>
+
+
+@{
+    List<DoAn_CNPM.Models.Song> listSong = ViewBag.listSong;
+    //current song
+    DoAn_CNPM.Models.Song song = listSong.First();
+
+    List<DoAn_CNPM.Models.Playlist> allPlayList = ViewBag.allPlayList;
+
+
+    string artists = "";
+    foreach (var item in song.Artists)
+    {
+        artists = artists + " " + item.Name + ",";
+    }
+    artists = artists.Substring(0, artists.Length - 1);
+}
+<link rel="stylesheet" href="/Assets/css/TrangNgheNhac.css" />
+<link rel="stylesheet" href="/Assets/css/TrangPlayList.css">
+<!-- body-->
+<div id="body" class="row col-lg-10 offset-lg-1">
+
+    <!-- chi tiết bài hát-->
+    <div class="row col-lg-8" id="songModal">
+        <!-- Name , Artist-->
+        <h2 class="col-lg-12">
+            <span id="nameOfSong">@song.Name - </span>
+            @{
+                List<DoAn_CNPM.Models.Artist> listArtist = song.Artists.Where(a => a.Status == true).ToList();
+            }
+            @if (listArtist.Count > 0)
+            {
+
+                foreach (var item in listArtist)
+                {
+                    if (listArtist.LastOrDefault() == item)
+                    {
+                        <a href="@Url.Action("Index","TrangNgheSi",new { id=item.ID })" style="font-size:70%">@item.Name</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TrangNgheSi",new { id=item.ID })" style="font-size:70%">@item.Name</a>
+                        <span>,</span>
+                    }
+                }
+            }
+            else
+            {
+                <a style="font-size:70%">Chưa cập nhật</a>
+            }
+        </h2>
+        <!-- Creator, album-->
+        <h3 class="col-lg-12">
+            <span class="label">Sáng tác: </span>
+            @if (song.Artist != null)
+            {
+                <a class="labelDetails" href="@Url.Action("Index","TrangNgheSi",new { id=song.Artist.ID })">
+                    @song.Artist.Name
+                </a>
+            }
+            else
+            {
+                <a class="labelDetails">
+                    Chưa cập nhật
+                </a>
+            }
+            &middot;
+            <span class="label">Album: </span>
+            @{
+                string tam = "";
+                if (song.Album == null)
+                {
+                    <span href="" class="labelDetails">Không có</span>
+                }
+                else
+                {
+                    <a href="@Url.Action("PlayAlbum", "TrangNgheNhac",new {id=song.Album })" class="labelDetails">@song.Album1.Name</a>
+                }
+            }
+            <span href="" class="labelDetails">@tam</span>
+        </h3>
+        <!-- Genre-->
+        <h3 class="col-lg-12">
+            <span class="label">Thể loại:</span>
+            @if (song.Genres != null && song.Genres.Count > 0)
+            {
+                foreach (var item in song.Genres)
+                {
+                    if (item != song.Genres.LastOrDefault())
+                    {
+                        <span class="labelDetails">@item.Name</span>
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span class="labelDetails">@item.Name</span>
+                    }
+                }
+            }
+            else
+            {
+                <span class="labelDetails">Chưa cập nhật</span>
+            }
+
+        </h3>
+
+        <!-- audio file-->
+        <audio id="player"
+               src="@Url.Content("~/Assets/singer/"+@song.FileName)"
+               onended="endTimeslider(this)"
+               ontimeupdate="UpdateTimeSlider(this)"
+               onpause="PauseTimeSlider()"
+               onplaying="PlayTimeSlider()">
+
+        </audio>
+        <!--file chạy mp3-->
+        <div class="audiofile col-lg-12 row">
+            <img class="col-lg-5" id="imgAudioFile" src="@Url.Content("~/Assets/image/avartarArtist/"+@song.Artists.First().Image)" onerror="this.src='@Url.Content("~/Assets/image/icon/defaultUser.png")'" alt="" />
+            <div class="col-lg-7 row detailsSongAudioFile">
+                <h5 class=" col-lg-12">
+                    @song.Name
+                </h5>
+                <p class="artistAudioFile col-lg-12">
+                    @artists
+                </p>
+                <!-- slider and time-->
+                <div class="controls col-lg-12 row">
+                    <span id="currentTime" class="time col-lg-2">
+                        00:00
+                    </span>
+                    <input class="col-lg-9 slider" id="slider" type="range" id="slider" value="0" min="0" />
+                    <span id="durationTime" class="time col-lg-1">
+                        05:00
+                    </span>
+                </div>
+                <!-- các nút điều hướng-->
+                <div class="nagativeButton col-lg-12 row">
+                    <img id="volume" src="@Url.Content("~/Assets/test/volume.png")" alt="">
+                    <div class="col-lg-3 ">
+                        <input class="col-lg-12"
+                               id="valueVolume"
+                               onchange="changeValueVolume(this)"
+                               type="range"
+                               min="0"
+                               max="10"
+                               value="10" />
+                    </div>
+
+                    <img id="backward" src="@Url.Content("~/Assets/test/backward.png")" alt="">
+                    <!---->
+
+                    <img id="play" onclick="playorpause(this)" src="@Url.Content("~/Assets/test/play.png")" alt="">
+
+
+                    <img id="forward" src="@Url.Content("~/Assets/test/forward.png")" alt="">
+
+                    <img id="replay" src="@Url.Content("~/Assets/test/reload-off.png")" alt="">
+                    <input type="checkbox" id="replayValue" style="display: none">
+                </div>
+                <div class="likeAndView">
+
+                    <div class="View"><img src="/Assets/image/icon/play.png" /><span id="viewCount">@song.Views</span></div>
+                    <div class="Like"><img src="/Assets/image/icon/like.png" /><span id="likeCount">@song.Likes</span></div>
+                </div>
+            </div>
+        </div>
+        <!-- các nút like , thêm vào, tải, ...-->
+
+        <div class="someButton col-lg-12 row">
+            <div class="col-lg-3" id="favorite">
+                @if (ViewBag.inFavorite == true)
+                {
+                    <img src="@Url.Content("~/Assets/image/icon/daThich.png")" id="imgLike" /><span>Yêu thích</span>
+                }
+                else
+                {
+                    <img src="@Url.Content("~/Assets/image/icon/chuaThich.png")" id="imgLike" /><span>Yêu thích</span>
+                }
+
+
+            </div>
+            <div class="col-lg-3" @*id="add"*@ onclick="addPlayListGeneral('@song.ID')">
+                <img src="@Url.Content("~/Assets/image/icon/themVao.png")" />
+                <span>Thêm vào</span>
+            </div>
+
+            <div target="_blank" class="col-lg-3"><a href="@Url.Content("~/Assets/singer/"+@song.FileName)" onclick="downloadMP3File(@song.ID)" download="@song.Name"><img src="@Url.Content("~/Assets/image/icon/taiXuong.png")" /><span>Tải xuống</span></a></div>
+        </div>
+
+        <!-- lyric-->
+        <div class="col-lg-12 lyric ">
+            <label for="" class="labelLyric">Lời bài hát</label>
+            <div  id="lyric">
+                @if (!string.IsNullOrEmpty(song.Lyrics))
+                {
+                    @Html.Raw(song.Lyrics)
+                }
+                else
+                {
+                    @Html.Raw("Lời bài hát chưa được cập nhật")
+                }
+            </div>
+        </div>
+
+        <script>
+        var currentSong = @song.ID;
+        var index = list.indexOf(currentSong)+1;
+        var nextSong;
+        if(index>=list.length){
+            nextSong = list[0];
+        }
+        else{
+            nextSong= list[index];
+        }
+
+        </script>
+
+    </div>
+
+    <!-- playlist bài hát-->
+    <div class="col-lg-4 Playlist ">
+        <h5 class="headerRecommend fullWidth">Danh sách bài hát</h5>
+        <!-- danh sách playlist-->
+        <div class="bodyPlaylist fullWidth">
+
+
+            @{
+                int stt = 1;
+
+            }
+
+                @foreach (var item in listSong)
+                {
+                 <!-- item trong playlist-->
+                    <div class=" itemRecommend" onclick="changeSongInList(@item.ID)" id="faSong@(item.ID)">
+                        <p class="number" id="number@(stt-1)">@stt</p>
+                        <p class="details">
+                            <span class="songName" title="@item.Name">@item.Name</span>
+
+                            @{
+                                string artistName = "";
+                                foreach (var it in item.Artists)
+                                {
+                                    artistName = artistName + " " + it.Name + ", ";
+                                }
+                                artistName = artistName.Substring(0, artistName.Length - 2);
+                            }
+
+                            <span class="artistName" title="@artistName">@artistName</span>
+                        </p>
+                    </div>
+                                    stt++;
+                                }
+   
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    @{
+        bool kq = false;
+        if (@Session["user"] != null)
+        {
+            kq = true;
+        }
+    }
+    <script>
+
+        var logged = @kq.ToString().ToLower();
+        //phân loại 3 loại trang: 1 trang nghe nhac, 2 trang playlist, 3 trang favorite, 4 trang PlaySongList
+        var typePage = 4;
+        var currentSong = @song.ID;
+        $('#faSong'+currentSong).find('.songName').css({
+            color:'#20b484'
+        });
+
+    </script>
+
+    <script src="/Assets/js/TrangNgheNhac.js"></script>
+    <script src="/Assets/js/TrangPlayList.js"></script>
+    <script src="/Assets/js/Header.js"></script>
+
