@@ -16,6 +16,8 @@ namespace DoAn_CNPM.Controllers
 {
     public class TrangNgheNhacController : Controller
     {
+        ContextSongList playsongList;
+        ContextaddFavor Favor;
         //
         // GET: /TrangNgheNhac/
         public ActionResult Index(int id, int preID=-1)
@@ -86,8 +88,11 @@ namespace DoAn_CNPM.Controllers
                 //kiểm tra bài hát tồn tại trong danh sách yêu thích ko
                 if (playListDAL.existSongInFavorite(Song,username.UserName))
                 {
-                    playListDAL.deleteFavoriteSong(username.UserName, Song);
-                    return Json(new { result = 1, imgsrc = "/Assets/image/icon/chuaThich.png", message="Xóa bài hát khỏi danh sách yêu thích thành công" }, JsonRequestBehavior.AllowGet);
+                    //playListDAL.deleteFavoriteSong(username.UserName, Song);
+                    Favor = new ContextaddFavor(new RemoveFavor());
+                    return Json(new { result = 1, imgsrc = "/Assets/image/icon/chuaThich.png",
+                        message ="Xóa bài hát khỏi danh sách yêu thích thành công" }, 
+                        JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -97,11 +102,24 @@ namespace DoAn_CNPM.Controllers
                     var songdal = SongDAL.createSongDAL();
                     if (!songdal.checkUserLikedSong(username.UserName, Song))
                     {
-                        songdal.insertUserLikedSong(Song, username.UserName);
-                        songdal.UpLike(Song);
-                        return Json(new { result = 1,like=songdal.getSongByID(Song).Likes, imgsrc = "/Assets/image/icon/daThich.png", message = "Thêm bài hát vào danh sách yêu thích thành công" }, JsonRequestBehavior.AllowGet);
+                        //songdal.insertUserLikedSong(Song, username.UserName);
+                        //songdal.UpLike(Song);
+                        Favor = new ContextaddFavor(new AddUpLike());
+                        return Json(new { result = 1,like=songdal.getSongByID(Song).Likes,
+                            imgsrc = "/Assets/image/icon/daThich.png",
+                            message = "Thêm bài hát vào danh sách yêu thích thành công" }, JsonRequestBehavior.AllowGet);
                     }
-                    return Json(new { result = 1, imgsrc = "/Assets/image/icon/daThich.png", message = "Thêm bài hát vào danh sách yêu thích thành công" }, JsonRequestBehavior.AllowGet);
+                    else
+                    {
+                        Favor = new ContextaddFavor(new AddStandard());
+                        return Json(new
+                        {
+                            result = 1,
+                            imgsrc = "/Assets/image/icon/daThich.png",
+                            message = "Thêm bài hát vào danh sách yêu thích thành công"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    
                 }
             }
 
@@ -122,11 +140,16 @@ namespace DoAn_CNPM.Controllers
                     if (playListDAL.deleteSongInPlayList(song, playList, username))
                     {
 
-                        return Json(new { result = 1, message = "Xóa bài hát khỏi play list thành công", imgsrc = "/Assets/image/icon/PlayList.png" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { result = 1,
+                            message = "Xóa bài hát khỏi play list thành công",
+                            imgsrc = "/Assets/image/icon/PlayList.png" }, 
+                            JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(new { result = 0, message = "Xảy ra lỗi, vui lòng thử lại sau" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { result = 0,
+                            message = "Xảy ra lỗi, vui lòng thử lại sau" }, 
+                            JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
@@ -137,17 +160,24 @@ namespace DoAn_CNPM.Controllers
                     tam.PlayList = playList;
                     if (playListDAL.insertSongtoPlayList(tam))
                     {
-                        return Json(new { result = 1, message = "Thêm bài hát vào play list thành công", imgsrc = "/Assets/image/icon/PlayListLike.png" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { result = 1,
+                            message = "Thêm bài hát vào play list thành công",
+                            imgsrc = "/Assets/image/icon/PlayListLike.png" }, 
+                            JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(new { result = 0, message = "Xảy ra lỗi, vui lòng thử lại sau" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { result = 0,
+                            message = "Xảy ra lỗi, vui lòng thử lại sau" }, 
+                            JsonRequestBehavior.AllowGet);
                     }
                 }
             }
             else
             {
-                return Json(new { result = 0,message="Vui lòng đăng nhập để thực hiện chức năng này" }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = 0,
+                    message ="Vui lòng đăng nhập để thực hiện chức năng này" }, 
+                    JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -234,11 +264,13 @@ namespace DoAn_CNPM.Controllers
 
         public ActionResult PlayAlbum(int id)
         {
-            var albumDAL = AlbumDAL.createAlbumDAL();
+            //var albumDAL = AlbumDAL.createAlbumDAL();
 
-            List<int> listSongID = albumDAL.getListSongIDByAlbum(id);
-
-            if (listSongID !=null && listSongID.Count > 0)
+            //List<int> listSongID = albumDAL.getListSongIDByAlbum(id);
+            string IDalbum = System.Convert.ToString(id);
+            playsongList = new ContextSongList(new PlayAlbum());
+            List<int> listSongID = playsongList.Playsongbystring(IDalbum);
+            if ( listSongID.Count > 0)
             {
                 return PlaySongList(listSongID);
             }
@@ -263,9 +295,9 @@ namespace DoAn_CNPM.Controllers
             //    if (item.Status == true)
             //        listSongID.Add(item.ID);
             //}
-            var a = new PlayRankForWeek();
-            a.PlayRank();
-            return PlaySongList(a.PlayRank());// 
+            playsongList = new ContextSongList(new PlayRankForWeek());
+            List<int> s = playsongList.Playsong();
+            return PlaySongList(s);
             
             
         }
@@ -273,19 +305,19 @@ namespace DoAn_CNPM.Controllers
         // nghe tất cả bài hát trong bxh tháng
         public ActionResult PlayRankForMonth()
         {
-        //    //SongDAL songdal = new SongDAL();
-        //    var songdal = SongDAL.createSongDAL();
-        //    List<Song> listRank = songdal.getRankForMonth(200);
-        //    List<int> listSongID = new List<int>();
-        //    foreach (var item in listRank)
-        //    {
-        //        if (item.Status == true)
-        //            listSongID.Add(item.ID);
-        //    }
-        //    return PlaySongList(listSongID);
-            var a = new PlayRankForMonth();
-            a.PlayRank();
-            return PlaySongList(a.PlayRank());
+            //    //SongDAL songdal = new SongDAL();
+            //    var songdal = SongDAL.createSongDAL();
+            //    List<Song> listRank = songdal.getRankForMonth(200);
+            //    List<int> listSongID = new List<int>();
+            //    foreach (var item in listRank)
+            //    {
+            //        if (item.Status == true)
+            //            listSongID.Add(item.ID);
+            //    }
+            //    return PlaySongList(listSongID);
+            playsongList = new ContextSongList(new PlayRankForMonth());
+            List<int> s = playsongList.Playsong();
+            return PlaySongList(s);
         }
 
         //nghe tất cả bài hát trong bxh views cao nhất
@@ -301,9 +333,9 @@ namespace DoAn_CNPM.Controllers
             //        listSongID.Add(item.ID);
             //}
             //return PlaySongList(listSongID);
-            var a = new PlayRankForView();
-            a.PlayRank();
-            return PlaySongList(a.PlayRank());
+            playsongList = new ContextSongList(new PlayRankForView());
+            List<int> s = playsongList.Playsong();
+            return PlaySongList(s);
         }
 
         //nghe bài hát trong danh sách yêu thích
@@ -312,19 +344,21 @@ namespace DoAn_CNPM.Controllers
             if (Session["user"] != null)
             {
                 User user = (User)Session["user"];
-                var playListDAL = PlayListDAL.createPlayListDAL();
-                //SongDAL songdal = new SongDAL();
-                var songdal = SongDAL.createSongDAL();
-                List<FavoriteSong> listFS = playListDAL.getFavoriteSongByUser(user.UserName);
-                List<int> listSongID = new List<int>();
-                foreach (var item in listFS)
-                {
-                    Song tempSong = songdal.getSongByID(item.Song);
-                    if (tempSong != null && tempSong.Status==true)
-                    {
-                        listSongID.Add(tempSong.ID);
-                    }
-                }
+                //var playListDAL = PlayListDAL.createPlayListDAL();
+                ////SongDAL songdal = new SongDAL();
+                //var songdal = SongDAL.createSongDAL();
+                //List<FavoriteSong> listFS = playListDAL.getFavoriteSongByUser(user.UserName);
+                //List<int> listSongID = new List<int>();
+                //foreach (var item in listFS)
+                //{
+                //    Song tempSong = songdal.getSongByID(item.Song);
+                //    if (tempSong != null && tempSong.Status==true)
+                //    {
+                //        listSongID.Add(tempSong.ID);
+                //    }
+                //}
+                playsongList = new ContextSongList(new PlayFavoriteList());
+                List<int> listSongID = playsongList.Playsongbystring(user.UserName);
                 if (listSongID.Count > 0)
                 {
                     return PlaySongList(listSongID);

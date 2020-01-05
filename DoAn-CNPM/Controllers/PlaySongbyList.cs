@@ -7,8 +7,9 @@ using System.Web;
 
 namespace DoAn_CNPM.Controllers
 {
-    public abstract class absPlayRankSong
+    public abstract class absPlaySongbyList
     {
-        public abstract List<int> PlayRank();
+        public abstract List<int> PlaySongList();
+        public abstract List<int> PlaySongListbyString(string id);
     }
 }

@@ -8,9 +8,9 @@ using System.Web;
 
 namespace DoAn_CNPM.Controllers
 {
-    public class PlayRankForMonth : absPlayRankSong
+    public class PlayRankForMonth : absPlaySongbyList
     {
-        public override List<int> PlayRank()
+        public override List<int> PlaySongList()
         {
             var songdal = SongDAL.createSongDAL();
             List<Song> listRank = songdal.getRankForMonth(200);
@@ -22,5 +22,6 @@ namespace DoAn_CNPM.Controllers
             }
             return listSongID;
         }
+        public override List<int> PlaySongListbyString(string username) { return null; }
     }
 }
